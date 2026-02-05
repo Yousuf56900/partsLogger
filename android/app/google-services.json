@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "178961409564",
+    "project_id": "partslogger-683fb",
+    "storage_bucket": "partslogger-683fb.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:178961409564:android:124251e697fb7b66f461d9",
+        "android_client_info": {
+          "package_name": "com.easyghar"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCnDQhe-7xE5E9UIyxX8iYrhH2uAfgtqcA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
