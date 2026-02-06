@@ -36,7 +36,7 @@ const AddVehicles = () => {
   const getVehicleImage = name => {
     const key = name?.toLowerCase();
 
-    if (key?.includes('semi')) return appImages.categorySemi;
+    if (key?.includes('semi')) return appImages.semiTrack;
     if (key?.includes('truck')) return appImages.categoryTruckAlt;
     if (key?.includes('motor') || key?.includes('car'))
       return appImages.categoryCar;
@@ -44,7 +44,7 @@ const AddVehicles = () => {
       return appImages.categoryTractor;
     if (key?.includes('farm')) return appImages.tractor;
     if (key?.includes('atv') || key?.includes('boat'))
-      return appImages.categoryUtv;
+      return appImages.categorySemi;
 
     return appImages.categoryCar;
   };
@@ -102,7 +102,7 @@ const reorderedData = React.useMemo(() => {
           {reorderedData?.map((vehicle, index) => {
             const vehicleImage = getVehicleImage(vehicle?.name);
             const imageUrl = getImageUrl(vehicle?.image);
-            console.log('imageServer + vehicle?.image ', vehicle?.name)
+            console.log('vehicle?.namevehicle?.name',vehicle)
             return (
               <TouchableOpacity
                 activeOpacity={0.7}
@@ -136,8 +136,8 @@ const reorderedData = React.useMemo(() => {
                   {vehicle.name !== "Other" && <FastImage
                     source={vehicleImage}
                     style={{
-                      height: vehicle.name ===  "Truck" ? vh * 22:  vh * 26,
-                      width: vehicle.name ===  "Truck" ? vh * 22:  vh * 26,
+                      height: vehicle.name ===  "Truck" || vehicle?.name === "Farm and Ranch" ? vh * 21:  vh * 28,
+                      width: vehicle.name ===  "Truck" || vehicle?.name === "Farm and Ranch"? vh * 21:  vh * 28,
                       marginTop: 20
                     }}
                     resizeMode={FastImage.resizeMode.contain}

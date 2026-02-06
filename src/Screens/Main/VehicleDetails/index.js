@@ -567,7 +567,7 @@ console.log('vehicle?.vehicleDetails',vehicle)
               </View>
             </>
           )}
-            <View style={styles.column}>
+          {vehicle?.vehicleType?.name === "Truck" && <>  <View style={styles.column}>
             <CustomText
               text="Trailer Load Info"
               color={colors.text.placeholder}
@@ -608,7 +608,8 @@ console.log('vehicle?.vehicleDetails',vehicle)
               font={fonts.benzin.regular}
               size={font.medium}
             />
-          </View>
+          </View></> }
+          
           <View style={styles.column}>
             <CustomText
               text="Comments"

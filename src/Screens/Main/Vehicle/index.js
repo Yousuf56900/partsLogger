@@ -79,10 +79,9 @@ const Vehicle = ({ navigation }) => {
     </View>
   );
 
-  // ---- MAIN LIST ----
   const VehiclesList = () => (
     <View style={{ paddingBottom: height * 0.15 }}>
-      <View
+      {/* <View
         style={{
           marginHorizontal: 16,
           marginBottom: 20,
@@ -108,7 +107,7 @@ const Vehicle = ({ navigation }) => {
         </TouchableOpacity>
 
    
-      </View>
+      </View> */}
 
       <MainButtonWithGradient
         title="Add Vehicle"

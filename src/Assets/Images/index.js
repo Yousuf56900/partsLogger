@@ -41,6 +41,7 @@ export const appImages = {
   categoryTractor: require('./categorytractor.png'),
   categoryTruck: require('./categorytruck.png'),
   categorySemi: require('./categoryutv.png'),
-  categoryTruckAlt: require('./categorytruck_alt.jpeg'),
+  categoryTruckAlt: require('./categorytruck_alt.png'),
+  semiTrack:require('./semiTrack.png'),
   errors: require('./errors.png'),
 };
