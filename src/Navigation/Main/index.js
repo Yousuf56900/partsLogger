@@ -51,9 +51,26 @@ import VehicleMaintenanceDetails from '../../Screens/Main/VehicleMaintenanceDeta
 import TestScreen from '../../Screens/Main/TestScreen';
 import AddPart from '../../Screens/Main/AddPart/AddPart'
 import AppStarter from '../../Screens/Main/AppStatrter'
+import MaintenanceDetail from '../../Screens/Main/MantenanceDetail/MaintenanceDetail'
+import AsyncStorage from '@react-native-async-storage/async-storage';
 const Stack = createNativeStackNavigator();
 
 const Main = () => {
+    const [initialScreen, setInitialScreen] = useState(null); // null = loading
+
+  useEffect(() => {
+    const checkStarter = async () => {
+      const isStarterSeen = await AsyncStorage.getItem('isStarter');
+      if (isStarterSeen) {
+        setInitialScreen(routes.navigator.tab); // go to tab if starter already seen
+      } else {
+        setInitialScreen(routes.main.AppStarter); // show starter first time
+      }
+    };
+    checkStarter();
+  }, []);
+
+  if (!initialScreen) return null; 
   return (
     <Stack.Navigator
       initialRouteName={routes.main.AppStarter}
@@ -127,6 +144,7 @@ const Main = () => {
       />
       <Stack.Screen name={routes.main.addastore} component={AddAStore} />
       <Stack.Screen name={routes.main.addnewseller} component={AddNewSeller} />
+       <Stack.Screen name={routes.main.MaintenanceDetail} component={MaintenanceDetail} />
       <Stack.Screen
         name={routes.main.addnewmechanic}
         component={AddNewMechanic}

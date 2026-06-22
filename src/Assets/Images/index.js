@@ -36,12 +36,13 @@ export const appImages = {
   placeholder: require('./userplaceholder.png'),
   maintenance: require('./maintenance.png'),
 
-  categoryCar: require('./categorycar.png'),
+  categoryCar: require('./categoryCar.png'),
   categoryUtv: require('./categorysemi.png'),
-  categoryTractor: require('./categorytractor.png'),
+  categoryTractor: require('./categoryTractor.png'),
   categoryTruck: require('./categorytruck.png'),
   categorySemi: require('./categoryutv.png'),
-  categoryTruckAlt: require('./categorytruck_alt.png'),
+  categoryTruckAlt: require('./categoryTruckAlt.png'),
   semiTrack:require('./semiTrack.png'),
   errors: require('./errors.png'),
+  smallE:require('./smallE.png')
 };

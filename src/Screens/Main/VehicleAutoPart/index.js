@@ -24,9 +24,6 @@ import {appImages} from '../../../Assets/Images';
 const VehicleAutoPart = ({route}) => {
   const navigation = useNavigation();
   const {carDetails, carType, screenType} = route.params;
-  console.log('CAR: ', carDetails);
-  console.log('CARTYPE: ', carType);
-  console.log('scrren: ', screenType);
   const item = carDetails;
   const firstSixDetails = item.slice(0, 6);
 

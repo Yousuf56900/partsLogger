@@ -75,7 +75,7 @@ const Navigator = () => {
       EventRegister.removeEventListener(logoutListener);
     };
   }, [dispatch]);
-console.log('routesroutes',routes?.mainStack)
+
   return (
     <NavigationContainer theme={MyTheme}>
       <Stack.Navigator screenOptions={{ headerShown: false }}>

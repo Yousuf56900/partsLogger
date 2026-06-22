@@ -28,6 +28,6 @@ export const styles = StyleSheet.create({
     backgroundColor: '#e0e0e0',
   },
   formContent: {},
-  buttonStyle: {alignSelf: 'center', marginTop: '14%',width:'88%'},
-  banner: {width:100,marginVertical:'5%',alignSelf:"center"},
+  buttonStyle: {alignSelf: 'center', marginTop: '5%',width:'88%'},
+  banner: {width: '100%'},
 });

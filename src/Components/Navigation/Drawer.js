@@ -1,4 +1,4 @@
-import React, {useRef, useState} from 'react';
+import React, { useRef, useState } from 'react';
 import {
   Dimensions,
   FlatList,
@@ -10,44 +10,46 @@ import {
   View,
   Image
 } from 'react-native';
-import {colors} from '../../theme/colors';
-import {font, spacing} from '../../theme/styles';
+import { colors } from '../../theme/colors';
+import { font, spacing } from '../../theme/styles';
 import MyIcons from '../MyIcons';
 
-import {vh, vw} from '../../theme/units';
-import {MainButton} from '../Buttons/MainButton';
+import { vh, vw } from '../../theme/units';
+import { MainButton } from '../Buttons/MainButton';
 
 import routes from '../../Navigation/routes';
 
-import {useDispatch, useSelector} from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import fonts from '../../Assets/fonts';
-import {useResetToScreen} from '../../Functions/resetToScreen';
-import {clearAuth} from '../../Redux/slices/authSlice';
-import {persistor} from '../../Redux/store';
-import {getFullName, getImageUrl} from '../../Utils/helperFunction';
+import { useResetToScreen } from '../../Functions/resetToScreen';
+import { clearAuth } from '../../Redux/slices/authSlice';
+import { persistor } from '../../Redux/store';
+import { getFullName, getImageUrl } from '../../Utils/helperFunction';
 import ActivityLoader from '../ActivityLoader';
 import ModalComponent from '../ModalComponent';
 import CustomText from '../wrappers/Text/CustomText';
-import {autopartsApi} from '../../Api/autopartsApiSlice';
-import {recordsApi} from '../../Api/recordsApiSlice';
-import {gasApi} from '../../Api/gasApiSlice';
-import {profileApi} from '../../Api/profileApiSlice';
-import {vehicleApi} from '../../Api/vehiclesApiSlice';
-import {storeApi} from '../../Api/storeApiSlice';
-import {mechanicApi} from '../../Api/mechanicApiSlice';
-import {accidentApi} from '../../Api/accidentApiSlice';
-import {travelApi} from '../../Api/travelApiSlice';
-import {paymentApi} from '../../Api/paymentApiSlice';
-import {maintenanceAutopartsApi} from '../../Api/mainteinanceAutopartsApiSlice';
-import {equipmentApi} from '../../Api/equipmentApiSlice';
-import {petApi} from '../../Api/petApiSlice';
-import {vetApi} from '../../Api/vetApiSlice';
-import {otherRecordsApi} from '../../Api/otherRecordsApiSlice';
-import {draftsApi} from '../../Api/draftsApiSlice';
-import {categoryApi} from '../../Api/categoryApiSlice';
-import Feather from 'react-native-vector-icons/Feather'; 
+import { autopartsApi } from '../../Api/autopartsApiSlice';
+import { recordsApi } from '../../Api/recordsApiSlice';
+import { gasApi } from '../../Api/gasApiSlice';
+import { profileApi } from '../../Api/profileApiSlice';
+import { vehicleApi } from '../../Api/vehiclesApiSlice';
+import { storeApi } from '../../Api/storeApiSlice';
+import { mechanicApi } from '../../Api/mechanicApiSlice';
+import { accidentApi } from '../../Api/accidentApiSlice';
+import { travelApi } from '../../Api/travelApiSlice';
+import { paymentApi } from '../../Api/paymentApiSlice';
+import { maintenanceAutopartsApi } from '../../Api/mainteinanceAutopartsApiSlice';
+import { equipmentApi } from '../../Api/equipmentApiSlice';
+import { petApi } from '../../Api/petApiSlice';
+import { vetApi } from '../../Api/vetApiSlice';
+import { otherRecordsApi } from '../../Api/otherRecordsApiSlice';
+import { draftsApi } from '../../Api/draftsApiSlice';
+import { categoryApi } from '../../Api/categoryApiSlice';
+import Feather from 'react-native-vector-icons/Feather';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-const {height} = Dimensions.get('screen');
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { CommonActions } from '@react-navigation/native';
+const { height } = Dimensions.get('screen');
 
 const menuItems = [
   {
@@ -73,11 +75,11 @@ const menuItems = [
   },
 ];
 
-const DrawerComp = ({navigation}) => {
+const DrawerComp = ({ navigation }) => {
   const [isModalVisible1, setModalVisible1] = useState(false);
   const [isTaskSuccess, setIsTaskSuccess] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const {resetToScreen} = useResetToScreen();
+  const { resetToScreen } = useResetToScreen();
   const dispatch = useDispatch();
   const userDetails = useSelector(state => state?.auth?.user || {});
   let profileImage = getImageUrl(userDetails?.image);
@@ -95,8 +97,8 @@ const DrawerComp = ({navigation}) => {
       logoutPopRef.current.close();
     }
   };
-  const renderItem = ({item, index}) => {
-    const {title, icon, nav} = item;
+  const renderItem = ({ item, index }) => {
+    const { title, icon, nav } = item;
     console.log('nav', nav);
     const handlePress = () => {
       if (title === 'Logout') {
@@ -136,8 +138,8 @@ const DrawerComp = ({navigation}) => {
                 padding: vh * 1.15,
                 borderColor: colors.theme.black,
               }}>
-                {/* {icon} */}
-                {/* <Image source={icon} style={{width:16,height:16}} /> */}
+              {/* {icon} */}
+              {/* <Image source={icon} style={{width:16,height:16}} /> */}
               <MyIcons name={icon} size={20} />
             </View>
             <Text style={styles.menuItemText}>{title}</Text>
@@ -168,14 +170,14 @@ const DrawerComp = ({navigation}) => {
             }}
           />
         </TouchableOpacity>
-        <View style={{marginTop: spacing.medium, gap: spacing.medium}}>
+        <View style={{ marginTop: spacing.medium, gap: spacing.medium }}>
           <FlatList
             bounces={false}
             showsVerticalScrollIndicator={false}
             scrollEnabled={false}
             data={menuItems}
             renderItem={renderItem}
-            contentContainerStyle={{flexGrow: 1}}
+            contentContainerStyle={{ flexGrow: 1 }}
           />
           {isLoading ? (
             <ActivityLoader color={colors.theme.secondary} />
@@ -216,7 +218,6 @@ const DrawerComp = ({navigation}) => {
             setModalVisible1(false);
             setTimeout(async () => {
               dispatch(clearAuth());
-
               // Use for clear cache of api data
               dispatch(autopartsApi.util.resetApiState());
               dispatch(recordsApi.util.resetApiState());
@@ -239,7 +240,6 @@ const DrawerComp = ({navigation}) => {
 
               // Use for clear asyncStore or localStorage
               await persistor.purge();
-              // resetToScreen(0, routes.mainStack.auth);
             }, 550);
           }}
         />

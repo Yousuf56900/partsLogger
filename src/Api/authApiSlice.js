@@ -16,9 +16,8 @@ export const authApi = createApi({
       async onQueryStarted(args, {dispatch, queryFulfilled}) {
         try {
           const {data} = await queryFulfilled;
-          console.log('data', data);
           // Dispatch the action to store user and token in Redux
-          dispatch(setAuth({user: data?.data?.user, token: data?.data?.token}));
+          // dispatch(setAuth({user: data?.data?.user, token: data?.data?.token}));
         } catch (error) {
           console.log('Login failed', error);
         }

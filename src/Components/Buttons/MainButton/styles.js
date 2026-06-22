@@ -13,7 +13,7 @@ const styles = StyleSheet.create({
        width: '100%',
     flexDirection: 'row',
     gap: spacing?.small,
-    borderWidth:3,
+    borderWidth:4,
     borderColor:'#C4C4C4',
     borderRadius:30
   },

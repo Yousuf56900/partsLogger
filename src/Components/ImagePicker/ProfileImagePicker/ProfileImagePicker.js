@@ -10,7 +10,6 @@ import {extractFileName, LOG} from '../../../Utils/helperFunction';
 
 const Profile = ({handleImage, isEdit, initialImage}) => {
   const [profileImage, setProfileImage] = useState(initialImage);
-  console.log('profileImage', profileImage);
 
   const handleImageChange = (imagePath, mime, type) => {
     let img = extractFileName(imagePath[0]);

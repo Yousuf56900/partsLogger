@@ -25,7 +25,7 @@ import { getImageUrl, LOG } from '../../../Utils/helperFunction';
 import { imageServer } from '../../../Api/configs';
 import FastImage from 'react-native-fast-image';
 import LinearGradient from 'react-native-linear-gradient';
-import { BlurView } from '@react-native-community/blur';
+
 
 
 const AddVehicles = () => {
@@ -46,29 +46,33 @@ const AddVehicles = () => {
     if (key?.includes('atv') || key?.includes('boat'))
       return appImages.categorySemi;
 
-    return appImages.categoryCar;
+    return appImages.smallE;
   };
 
 
-const swapLastTwo = (arr = []) => {
-  if (arr.length < 2) return arr;
+  const reorderVehicleData = (arr = []) => {
+    const orderPriority = [
+      "CAR / Motorcycle",
+      "Semi Truck",
+      "Truck",
+      "Heavy Equipment",
+      "Farm and Ranch",
+      "ATV /UTV / Boat",
+      "Small Equipment"
+    ];
 
-  const newArr = [...arr];
-  const lastIndex = newArr.length - 1;
+    return [...arr].sort((a, b) => {
+      return (
+        orderPriority.indexOf(a.name) -
+        orderPriority.indexOf(b.name)
+      );
+    });
+  };
 
-  [newArr[lastIndex], newArr[lastIndex - 1]] = [
-    newArr[lastIndex - 1],
-    newArr[lastIndex],
-  ];
-
-  return newArr;
-};
-
-const reorderedData = React.useMemo(() => {
-  return swapLastTwo(data || []);
-}, [data]);
-
-
+  const reorderedData = React.useMemo(() => {
+    const filterData = data?.filter((item) => item?.name !== "Other")
+    return reorderVehicleData(filterData || []);
+  }, [data]);
 
 
   const handlePress = vehicle => {
@@ -100,9 +104,9 @@ const reorderedData = React.useMemo(() => {
         contentContainerStyle={styles.scrollContent}>
         <View style={styles.container}>
           {reorderedData?.map((vehicle, index) => {
+            console.log('vehicle?.name', vehicle?.name)
             const vehicleImage = getVehicleImage(vehicle?.name);
             const imageUrl = getImageUrl(vehicle?.image);
-            console.log('vehicle?.namevehicle?.name',vehicle)
             return (
               <TouchableOpacity
                 activeOpacity={0.7}
@@ -110,13 +114,8 @@ const reorderedData = React.useMemo(() => {
                 onPress={() => handlePress(vehicle)}
                 style={styles.vehicleContainer}
               >
+                {/* {vehicle?.name === "Semi Truck" &&} */}
                 <View style={styles.bgImage}>
-                  <BlurView
-                    style={StyleSheet.absoluteFill}
-                    blurType="light"
-                    blurAmount={12}
-                    reducedTransparencyFallbackColor="#0A1E3F"
-                  />
 
                   <LinearGradient
                     colors={[
@@ -131,20 +130,21 @@ const reorderedData = React.useMemo(() => {
                     color={colors.theme.white}
                     font={fonts.clash.semibold}
                     size={font.xxxlarge}
-                    style={{ position: 'absolute', top: 16, left: 16 }}
+                 style={{ position: 'absolute', top: 10, left: 16 }}
                   />
-                  {vehicle.name !== "Other" && <FastImage
+                 <FastImage
                     source={vehicleImage}
                     style={{
-                      height: vehicle.name ===  "Truck" || vehicle?.name === "Farm and Ranch" ? vh * 21:  vh * 28,
-                      width: vehicle.name ===  "Truck" || vehicle?.name === "Farm and Ranch"? vh * 21:  vh * 28,
-                      marginTop: 20
+                      height: '100%',
+                      width: vehicle?.name ===  "Heavy Equipment" || vehicle?.name ===  "ATV /UTV / Boat" ? vh * 31 : vehicle?.name ===  "Farm and Ranch"  ? vh * 22 : vh * 27,
+                      marginTop: 20,
                     }}
-                    resizeMode={FastImage.resizeMode.contain}
-                    onError={(error) => {
-                      console.log('Image load error:', error.nativeEvent.error);
-                    }}
-                  />}
+                    resizeMode={
+                      vehicle?.name === "Semi Truck"
+                        ? FastImage.resizeMode.contain
+                        : FastImage.resizeMode.contain
+                    }
+                  />
 
 
                 </View>

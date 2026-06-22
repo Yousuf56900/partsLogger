@@ -43,4 +43,18 @@ export const styles = StyleSheet.create({
     alignSelf: 'center',
     marginTop: -20,
   },
+  // Add these to your styles.js
+errorContainer: {
+  flex: 1,
+  justifyContent: 'center',
+  alignItems: 'center',
+  backgroundColor: colors.background.primary,
+  padding: spacing.medium,
+},
+errorText: {
+  fontSize: 16,
+  color: colors.text.error,
+  marginBottom: spacing.medium,
+  textAlign: 'center',
+},
 });

@@ -17,7 +17,7 @@ import {reduxStorage} from '../../Redux/mmkv';
 import {LOG} from '../../Utils/helperFunction';
 import WelcomeScreen from '../../Screens/Auth/WelcomeScreen'
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import AppStarterCopy from '../../Screens/Auth/AppStatrterCopy'
 const Stack = createNativeStackNavigator();
 
 const Auth = () => {
@@ -42,11 +42,12 @@ const Auth = () => {
     <Stack.Navigator
       initialRouteName={   isStarter ? routes.auth.login : routes.auth.AppStarter}
       screenOptions={{headerShown: false}}>
-      {!isStarter && (
-        <Stack.Screen name={routes.auth.AppStarter} component={AppStarter} />
-      )}
+    {!isStarter &&  <Stack.Screen name={routes.auth.AppStarter} component={AppStarter} />}
+       
+
       {/* <Stack.Screen name={routes.auth.welcome} component={WelcomeScreen} /> */}
       <Stack.Screen name={routes.auth.login} component={LoginScreen} />
+      <Stack.Screen name={routes.auth.AppStarterCopy} component={AppStarterCopy} />
       <Stack.Screen name={routes.auth.signup} component={SignupScreen} />
       <Stack.Screen name={routes.auth.forgot} component={ForgotPassword} />
       <Stack.Screen name={routes.auth.genderSelect} component={GenderSelection}/>

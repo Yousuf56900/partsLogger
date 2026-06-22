@@ -68,12 +68,11 @@ const SignupScreen = ({ initialFormData = {}, isEdit = false }) => {
       deviceType: Platform.OS === 'ios' ? 'ios' : 'android',
     };
 
-    console.log('📦 Signup Payload:', payload);
+
 
     try {
       setIsLoading(true);
       const response = await makeApiCall(registration, payload)
-      console.log('✅ Signup Success Response:', response);
       if (response) {
         setIsTaskSuccess(true);
         // resetForm();

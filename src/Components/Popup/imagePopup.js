@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, Dimensions, FlatList, Image } from 'react-native';
 import Modal from 'react-native-modal';
 import { vh, vw } from '../../theme/units';
+import Icon from 'react-native-vector-icons/Ionicons';
 import { getImageUrl } from '../../Utils/helperFunction'
 import FastImage from 'react-native-fast-image';
 const { width, height } = Dimensions.get('screen');
@@ -18,7 +19,13 @@ const ImagePopup = ({
       animationOut={'zoomOut'}
       backdropOpacity={0.8}
     >
-      <View style={{ height: height * 0.488 ,width:'100%'}}>
+      <View style={{ height: height * 0.488, width: '100%' }}>
+        <TouchableOpacity
+          onPress={() => setIsFavorite(false)}
+          style={styles.closeButton}
+        >
+          <Icon name="close" size={28} color="#fff" />
+        </TouchableOpacity>
         <FlatList
           data={images?.gallery}
           horizontal
@@ -34,7 +41,7 @@ const ImagePopup = ({
                   height: height * 0.420,
                   overflow: 'hidden',
                   borderRadius: 10,
-                  backgroundColor:'#fff',
+                  backgroundColor: '#fff',
                   // marginHorizontal:10
                 }}
               >
@@ -46,8 +53,8 @@ const ImagePopup = ({
                     width: '100%',
                     height: height * 0.410,
                   }}
-                  
-                  // resizeMode="cover"
+
+                // resizeMode="cover"
                 />
               </View>
             );
@@ -94,6 +101,15 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
   },
+  closeButton: {
+  position: 'absolute',
+  top: -20,
+  right: 5,
+  zIndex: 10,
+  backgroundColor: '#000',
+  borderRadius: 20,
+  padding: 5,
+}
 });
 
 

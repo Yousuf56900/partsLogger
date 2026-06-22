@@ -3,7 +3,7 @@ import * as Yup from 'yup';
 const vehicleValidation = Yup.object().shape({
   vehicleType: Yup.string().required('Vehicle Category is required'),
   make: Yup.string().required('Vehicle Make is required'),
-  // model: Yup.string().required('Model is required'),
+  model: Yup.string().required('Model is required'),
   // year: Yup.string().required('Year is required'),
   // VIN: Yup.string().required('SR# or VIN is required'),
   // engineSize: Yup.string().required('Engine Size is required'),

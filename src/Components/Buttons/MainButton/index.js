@@ -19,13 +19,14 @@ const MainButton = ({
   disabled,
   icon,
   hideIcon = false,
+   gradientColors = ['#AF0000', '#FF2E00', '#FF1A00'], 
 }) => {
   return (
     <TouchableOpacity
       disabled={disabled}
 
       onPress={onPress}>
-      <LinearGradient colors={['#AF0000', '#FF2E00', '#FF1A00']}
+      <LinearGradient   colors={gradientColors}
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 1 }} style={[styles.container, style]}>
         {icon ? (
@@ -35,7 +36,7 @@ const MainButton = ({
             <CustomText
               text={title}
               style={[styles.textStyle, textStyle]}
-              font={fonts.benzin.semibold}
+              // font={fonts.benzin.semibold}
             />
             {(() => {
 

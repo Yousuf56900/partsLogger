@@ -90,7 +90,7 @@ const TabBar = ({ state, navigation }) => {
           }
 
           let routeNames;
-          if (route.name === routes?.tab?.home) routeNames = 'EXPENSE';
+          if (route.name === routes?.tab?.home) routeNames = 'About US';
           if (route.name === routes?.tab?.records)
             routeNames = 'VEHICLE RECORD';
           if (route.name === routes?.tab?.otherrecord)

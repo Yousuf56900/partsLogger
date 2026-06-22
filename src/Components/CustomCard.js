@@ -8,7 +8,7 @@ import CustomIcon from './CustomIcon';
 import CustomText from './wrappers/Text/CustomText';
 import { appImages } from '../Assets/Images';
 import MyIcons from './MyIcons';
-import ImagePopup from  '../Components/Popup/imagePopup'
+import ImagePopup from '../Components/Popup/imagePopup'
 const { width, height } = Dimensions.get('screen');
 
 const CustomCard = ({
@@ -38,9 +38,28 @@ const CustomCard = ({
   const renderSingleImage = () => {
     if (!item?.gallery || item.gallery.length === 0) {
       return (
-        <TouchableOpacity activeOpacity={0.9} onPress={()=> [setIsFavorite(true)]}>
-    <CustomIcon
-          src={null} 
+        <TouchableOpacity activeOpacity={0.9} onPress={() => [setIsFavorite(true)]}>
+          <CustomIcon
+            src={null}
+            disabled={true}
+            customIconWrapper={[styles.eventImg, { height: height * 0.232 }]}
+            resizeMode={'cover'}
+            customIconStyle={{
+              borderTopLeftRadius: 10,
+              borderTopRightRadius: 10,
+            }}
+          />
+        </TouchableOpacity>
+
+      );
+    }
+
+    const imageUrl = getImageUrl(item.gallery[0]);
+
+    return (
+      <TouchableOpacity style={{ gap: 10 }} activeOpacity={0.9} onPress={() => [setIsFavorite(true)]}>
+        <CustomIcon
+          src={imageUrl}
           disabled={true}
           customIconWrapper={[styles.eventImg, { height: height * 0.232 }]}
           resizeMode={'cover'}
@@ -49,27 +68,7 @@ const CustomCard = ({
             borderTopRightRadius: 10,
           }}
         />
-        </TouchableOpacity>
-    
-      );
-    }
-
-    const imageUrl = getImageUrl(item.gallery[0]);
-    console.log('Single image URL:', imageUrl);
-
-    return (
-        <TouchableOpacity activeOpacity={0.9} onPress={()=> [setIsFavorite(true)]}>
-      <CustomIcon
-        src={imageUrl}
-        disabled={true}
-        customIconWrapper={[styles.eventImg, { height: height * 0.232 }]}
-        resizeMode={'cover'}
-        customIconStyle={{
-          borderTopLeftRadius: 10,
-          borderTopRightRadius: 10,
-        }}
-      />
-       {isFavorite &&       <ImagePopup setIsFavorite={setIsFavorite} images={item} isVisible={isFavorite} /> }
+        {isFavorite && <ImagePopup setIsFavorite={setIsFavorite} images={item} isVisible={isFavorite} />}
       </TouchableOpacity>
     );
   };
@@ -81,7 +80,7 @@ const CustomCard = ({
     <TouchableOpacity
       style={[
         !product && styles.container,
-        { paddingHorizontal: 0},
+        { paddingHorizontal: 0 },
         shopMyCart && { backgroundColor: 'transparent' },
         (shopMyCart || orderCardList) && { backgroundColor: 'transparent' },
       ]}
@@ -90,8 +89,8 @@ const CustomCard = ({
       disabled={disabled}>
 
       {couponCard && (
-        <View 
-        
+        <View
+
         // style={{ paddingHorizontal: noPadding ? 0 : 10 }}
         >
           {renderSingleImage()}
@@ -138,7 +137,7 @@ const CustomCard = ({
           </View>
         </View>
       )}
-     
+
 
     </TouchableOpacity>
   );

@@ -64,15 +64,24 @@ const SubscriptionPlan = ({ navigation, route }) => {
   };
 
 
-
+  const yearlyPlanData = {
+    Basic: { yearly: 20, saving: 4 },
+    Standard: { yearly: 65, saving: 7 },
+    Business: { yearly: 199, saving: 40.88 },
+    Comerical: { yearly: 420, saving: 60 },
+  };
   const [selectedPlanType, setSelectedPlanType] = useState('MONTHLY');
 
   const subscriptionData = data?.data || [];
 
-  // Filtered plans by selected tab
-  const filteredPlans = subscriptionData.filter(
-    item => item.planType === selectedPlanType,
-  );
+  const planOrder = ['Basic', 'Standard', 'Business', 'Comerical'];
+
+  const filteredPlans = subscriptionData
+    .filter(item => item.planType === selectedPlanType)
+    .sort(
+      (a, b) =>
+        planOrder.indexOf(a.planName) - planOrder.indexOf(b.planName)
+    );
 
   const data3 = [
     { id: 0, title: 'Monthly' },
@@ -82,6 +91,18 @@ const SubscriptionPlan = ({ navigation, route }) => {
   return (
     <>
       <CustomHeader routeName={routes?.main?.subscriptionplan} />
+     <View style={{alignSelf:"center"}}>
+       <MainButtonWithGradient
+        title={'15 days free trial'}
+        gradientColors={['#0BA360', '#0BA360']}
+        onPress={handlePaymentSuccess}
+        style={{
+          width: vw * 50, alignSelf: 'start', 
+          marginVertical: 10,fontSize:15
+        }}
+      />
+     </View>
+      {isLoading && <ActivityLoader color={colors.theme.secondary} />}
       <View style={styles.tabContainer}>
         <MultiTabbar
           labels={data3}
@@ -91,21 +112,15 @@ const SubscriptionPlan = ({ navigation, route }) => {
           }}
         />
       </View>
-      <MainButtonWithGradient
-        title={'15 days free trial'}
-        onPress={handlePaymentSuccess}
-        style={{
-          width: vw * 50, alignSelf: 'start', marginLeft: 30,
-          marginVertical: 10
-        }}
-      />
-      {isLoading && <ActivityLoader color={colors.theme.secondary} />}
+
 
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.contentContainer}>
           {filteredPlans.map(item => {
-            console.log('itemdkjdjkdjk', item);
-
+            const monthlyPrice = Number(item.planCharges);
+            const yearlyPrice = yearlyPlanData[item.planName]?.yearly || 0;
+            const savingAmount = yearlyPlanData[item.planName]?.saving || 0;
+            const payMonthlyForYear = (monthlyPrice * 12).toFixed(2);
             return (
               <View key={item._id} style={styles.cardContainer}>
                 <View style={styles.cardBackground}>
@@ -165,14 +180,16 @@ const SubscriptionPlan = ({ navigation, route }) => {
 
                   <View style={styles.cardStyle}>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                      <CustomText
-                        text={`$${item.planCharges}`}
-                        size={font.h5}
-                        font={fonts?.clash?.bold}
-                        color={colors?.text?.dimBlack}
-                        numberOfLines={1}
-                      />
-                      <CustomText
+                      <View>
+                        <View style={{flexDirection:"row",alignItems:"center"}}>
+                        <CustomText
+                          text={`$${item.planCharges?.toFixed(2)}`}
+                          size={font.h5}
+                          font={fonts?.clash?.bold}
+                          color={colors?.text?.dimBlack}
+                          numberOfLines={1}
+                        />
+                          <CustomText
                         text={
                           selectedPlanType === 'MONTHLY'
                             ? `/ per month`
@@ -182,14 +199,32 @@ const SubscriptionPlan = ({ navigation, route }) => {
                         font={fonts?.benzin?.regular}
                         color={colors?.text?.dimBlack}
                         numberOfLines={1}
-                        style={{ top: vh * 0.8 }}
+                        style={{ paddingLeft:6 }}
                       />
+                      </View>
+                        {selectedPlanType === 'MONTHLY' && (
+                          <CustomText
+                            text={`Pay monthly for 1 year: $${payMonthlyForYear}`}
+                            size={font.small}
+                            color={'#888'}
+                          />
+                        )}
+                        {selectedPlanType === 'YEARLY' && (
+                          <CustomText
+                            text={`You save $${savingAmount.toFixed(2)}`}
+                            size={font.small}
+                            color={'green'}
+                          />
+                        )}
+                      </View>
+
+                    
                     </View>
 
                     <MainButton
                       title={'Choose Plan'}
                       style={styles.planbutton}
-                      textStyle={{ color: colors.text.dimBlack }}
+                      textStyle={{ color: colors.text.white }}
                       hideIcon={true}
                       onPress={() => {
                         handlePaymentSuccess()

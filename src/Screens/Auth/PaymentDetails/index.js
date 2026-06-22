@@ -34,7 +34,6 @@ const PaymentDetails = ({navigation, route}) => {
     console.log('<<<< Handle Submit >>>>');
   };
 
-  console.log(signupData, 'signup data in final screen');
   const [subPurchaseVisible, setSubPurchaseVisible] = useState(false);
   const [successVisible, setSuccessVisible] = useState(false);
   const [unSuccessfullVisible, setUnSuccessfullVisible] = useState(false);

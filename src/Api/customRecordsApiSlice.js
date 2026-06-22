@@ -55,7 +55,6 @@ export const customRecordsApi = createApi({
     // }),
     edit: builder.mutation({
       query: ({id, body}) => {
-        console.log('ididid',id,body)
         return(
         {
         url: `${endpoints.customRecords.edit.url}/${id}`,

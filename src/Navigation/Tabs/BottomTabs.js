@@ -22,7 +22,7 @@ export const BottomTabs = () => {
   }}
   sceneContainerStyle={{ backgroundColor: '#fff' }}
       tabBar={props => <TabBar {...props} />}
-      initialRouteName={routes?.tab?.vehicles}>
+      initialRouteName={routes?.tab?.Vehicle}>
       <Tab.Screen name={routes?.tab?.vehicles} component={Vehicle} />
       {/* <Tab.Screen name={routes?.tab?.records} component={Records} /> */}
       <Tab.Screen name={routes.tab.addrecords} component={AddRecord} />

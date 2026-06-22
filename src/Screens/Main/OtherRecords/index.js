@@ -129,11 +129,7 @@ const OtherRecords = () => {
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [filters, setFilters] = useState({});
   const [categories, setCategories] = useState(VehicleParts);
-  console.log('categoriescategoriescategories', categories);
-  console.log('selectedMechanicselectedMechanic', selectedMechanic);
 
-
-  console.log('filtersfiltersfilters', filters);
 
   const {
     data: customCategory,
@@ -177,10 +173,6 @@ const OtherRecords = () => {
   };
 
   const handleValueChange = (value, id, value2) => {
-    console.log('valuvalue', value);
-    console.log('idid', id);
-    console.log('value2value2', value2);
-
     const selectedPart = categories.find((part) => part.displayValue === value?.value);
     const apiValue = selectedPart ? selectedPart.apiValue : null;
     setSelectedMechanic(apiValue);

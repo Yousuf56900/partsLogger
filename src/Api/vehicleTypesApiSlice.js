@@ -9,9 +9,6 @@ export const vehicleTypesApi = createApi({
   endpoints: builder => ({
     fetchVehicleTypes: builder.query({
       query: parentId => {
-        console.log('parentIdparentId', parentId);
-
-        LOG('queryParams-vehicle-types', parentId);
         return {
           url: endpoints.vehicleTypes.fectchVehicleType.url,
           method: endpoints.vehicleTypes.fectchVehicleType.method,

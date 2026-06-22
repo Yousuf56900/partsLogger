@@ -6,7 +6,7 @@ const CustomText = ({
   text = '',
   size = 16,
   style = {},
-  font = fonts.clash.regular,
+  font = underline,
   onPress = undefined,
   color,
   expandable = false,

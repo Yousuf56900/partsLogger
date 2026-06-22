@@ -11,6 +11,7 @@ import Step02 from './FormSteps/Step02';
 import { CommonActions, useNavigation } from '@react-navigation/native';
 import routes from '../../../Navigation/routes';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import MyIcons from '../../../Components/MyIcons';
 
 const CyroLiabilityForm = () => {
   const navigation = useNavigation();
@@ -58,6 +59,9 @@ const CyroLiabilityForm = () => {
   };
   return (
     <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
+      <View style={{ marginTop: 0, alignSelf: "center" }}>
+        <MyIcons name={'logo'} size={140} />
+      </View>
       <View style={styles.formContent}>{renderStepContent()}</View>
       <View style={styles.indicatorContainer}>
         {[...Array(totalSteps)].map((_, index) => (

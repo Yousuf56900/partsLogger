@@ -1,46 +1,59 @@
-import {Image, StyleSheet, Text, View} from 'react-native';
+import { Image, StyleSheet, Text, View } from 'react-native';
 import React from 'react';
 import CustomText from '../../../../Components/wrappers/Text/CustomText';
 import fonts from '../../../../Assets/fonts';
-import {vh, vw} from '../../../../theme/units';
-import {colors} from '../../../../theme/colors';
-import {appImages} from '../../../../Assets/Images';
-import {MainButton} from '../../../../Components/Buttons/MainButton';
-import {styles} from '../styles';
-const Step01 = ({titleData, banner, onButtonNext}) => {
+import { vh, vw } from '../../../../theme/units';
+import { colors } from '../../../../theme/colors';
+import { appImages } from '../../../../Assets/Images';
+import { MainButton } from '../../../../Components/Buttons/MainButton';
+import { styles } from '../styles';
+
+const Step01 = ({ titleData, banner, onButtonNext }) => {
+
+  const carPartsImages = [
+    appImages.appStarter1,
+    appImages.appstarter2,
+    appImages.appStarter,
+    appImages.appstarter,
+    appImages.autopartrecord,
+    appImages.maintenancerecord,
+  ];
+
   return (
-    <View style={{justifyContent:"center",marginTop:'13%'}}>
+    <View style={{ justifyContent: "center", marginTop: '4%' }}>
+      
       {titleData && (
-        <View style={{marginHorizontal:"5%"}}>
+        <View style={{ marginHorizontal: "5%" }}>
           <CustomText
-            text={`Welcome Back`}
-            size={vh * 4.3}
-            font={fonts.clash.bold}
+            text={`Everything About Your Car in One Place`}
+            size={vh * 2.2}
             color={colors.text.dimBlack}
-            // style={{fontWeight:'bold'}}
+            style={{ fontWeight: 'bold' }}
           />
-          {/* <CustomText
-            text={`Parts Logger`}
-            size={vh * 4.5}
-            font={fonts.clash.bold}
-            color={colors.text.red}
-            style={{marginBottom:10}}
-          />
+
           <CustomText
-            text={`keep record for all your parts`}
-            size={font.medium}
-            font={fonts.benzin.regular}
-            color={colors.text.dimBlack}
-          /> */}
+            text={`Take Pics of your receipts`}
+            size={vh * 2.7}
+            style={{ marginBottom: 10, fontWeight: '600' }}
+          />
         </View>
       )}
+
       {banner && (
         <>
-          <Image
-            source={appImages.appStarter}
-            resizeMode="stretch"
-            style={[styles.banner, {height: 300}]}
-          />
+          
+          {/* 6 Images Grid */}
+          <View style={localStyles.imageContainer}>
+            {carPartsImages.map((img, index) => (
+              <Image
+                key={index}
+                source={img}
+                resizeMode="contain"
+                style={localStyles.partImage}
+              />
+            ))}
+          </View>
+
           <MainButton
             title={'Continue'}
             style={styles.buttonStyle}
@@ -53,3 +66,18 @@ const Step01 = ({titleData, banner, onButtonNext}) => {
 };
 
 export default Step01;
+
+const localStyles = StyleSheet.create({
+  imageContainer: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "space-between",
+    marginHorizontal: "5%",
+    marginTop: 20,
+  },
+  partImage: {
+    width: "30%",
+    height: 80,
+    marginBottom: 15,
+  },
+});

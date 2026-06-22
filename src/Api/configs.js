@@ -1,4 +1,4 @@
-//  export const baseUrl = 'https://h5kqzzf8-3056.uks1.devtunnels.ms/api';
+// export const baseUrl = 'https://z859ct1m-3056.inc1.devtunnels.ms/api';
 export const baseUrl = 'https://api.partslogger.com/api';
 
 // export const imageServer = 'https://h5kqzzf8-3056.uks1.devtunnels.ms/uploads/';
@@ -143,12 +143,20 @@ export const endpoints = {
   },
   maintenanceAutoparts: {
     add: {
-      url: '/vehicleService/addVehicleService',
+      url: '/maintenance/addMaintenance',
       method: 'POST',
     },
+    update: {
+      url: '/maintenance/updateMaintenance',
+      method: 'PUT',
+    },
     fetchMaintenaceByUser: {
-      url: '/vehicleService/getVehicleServicesByUserId',
+      url: '/maintenance/getMaintenancesByUserId',
       method: 'GET',
+    },
+    delete: {
+      url: '/maintenance/deleteMaintenance',
+      method: 'DELETE',
     },
   },
   travel: {
@@ -210,7 +218,7 @@ export const endpoints = {
       url: '/history/getRecords',
       method: 'GET',
     },
-    fetchRecentRecordsExprenses:{
+    fetchRecentRecordsExprenses: {
       url: '/history/getExpenses',
       method: 'GET',
     },
@@ -291,7 +299,7 @@ export const endpoints = {
       method: 'DELETE',
     },
   },
-    part: {
+  part: {
     add: {
       url: '/part/add',
       method: 'POST',
@@ -300,6 +308,14 @@ export const endpoints = {
       url: '/part/getAll',
       method: 'GET',
     },
+    update: {
+      url: '/part/update',
+      method: 'PUT',
+    },
+    delete: {
+      url: '/part/delete',
+      method: 'DELETE',
+    }
   },
 };
 
@@ -310,7 +326,7 @@ export const reducers = {
     journalEntries: 'journalEntriesApi',
     profile: 'profileApi',
     vehicle: 'vehicleApi',
-    part:'partApi',
+    part: 'partApi',
     vehicleTypes: 'vehicleTypesApi',
     contactUs: 'contactUsApi',
     worker: 'workerApi',

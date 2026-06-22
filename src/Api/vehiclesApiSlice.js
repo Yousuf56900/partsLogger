@@ -1,7 +1,7 @@
-import {createApi} from '@reduxjs/toolkit/query/react';
-import {baseQuery} from './apiConfig';
-import {endpoints, reducers} from './configs';
-import {LOG} from '../Utils/helperFunction';
+import { createApi } from '@reduxjs/toolkit/query/react';
+import { baseQuery } from './apiConfig';
+import { endpoints, reducers } from './configs';
+import { LOG } from '../Utils/helperFunction';
 
 export const vehicleApi = createApi({
   reducerPath: reducers.path.vehicle,
@@ -13,7 +13,7 @@ export const vehicleApi = createApi({
         return {
           url: endpoints.vehicle.add.url,
           method: endpoints.vehicle.add.method,
-          headers: {'Content-Type': 'multipart/form-data'},
+          headers: { 'Content-Type': 'multipart/form-data' },
           body: body,
         };
       },
@@ -39,10 +39,10 @@ export const vehicleApi = createApi({
       transformResponse: response => response?.data,
     }),
     edit: builder.mutation({
-      query: ({id, body}) => ({
+      query: ({ id, body }) => ({
         url: `${endpoints.vehicle.edit.url}/${id}`,
         method: endpoints.vehicle.edit.method,
-        headers: {'Content-Type': 'multipart/form-data'},
+        headers: { 'Content-Type': 'multipart/form-data' },
         body: body,
       }),
     }),
@@ -56,6 +56,29 @@ export const vehicleApi = createApi({
       },
       transformResponse: response => response?.data,
     }),
+    deleteVehicleImage: builder.mutation({
+      query: ({ vehicleId, image }) => {
+        LOG('deleteVehicleImage', { vehicleId, image });
+
+        // Extract filename from URL
+        const imageName = image?.split('/').pop();
+        LOG('Image name:', imageName);
+
+        return {
+          url: `/vehicle/vehicles/${vehicleId}/image`,  // 👈 YEH CHANGE KARO
+          method: 'DELETE',
+          body: { image: imageName },
+        };
+      },
+      transformResponse: (response) => {
+        LOG('deleteVehicleImage Response:', response);
+        return response?.data || response;
+      },
+      transformErrorResponse: (error) => {
+        LOG('deleteVehicleImage Error:', error);
+        return error;
+      },
+    }),
   }),
 });
 
@@ -65,4 +88,5 @@ export const {
   useFetchVehicleByIdQuery,
   useEditMutation,
   useDeleteMutation,
+  useDeleteVehicleImageMutation
 } = vehicleApi;

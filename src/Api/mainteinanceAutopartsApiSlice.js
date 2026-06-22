@@ -9,9 +9,6 @@ export const maintenanceAutopartsApi = createApi({
   endpoints: builder => ({
     add: builder.mutation({
       query: ({ id, body, queryParams, ...otherParams }) => {
-        LOG('bodyparams', body);
-        LOG('idparams', id);
-        LOG('queryParamsparams', queryParams);
         return {
           url: endpoints.maintenanceAutoparts.add.url,
           method: endpoints.maintenanceAutoparts.add.method,
@@ -22,12 +19,22 @@ export const maintenanceAutopartsApi = createApi({
       },
     }),
     fetchMaintenanceAutopartsByUser: builder.query({
-      query: ({ id, queryParams }) => {
+      query: id => {
         // console.log('queryParams', queryParams);
         return {
-          url: endpoints.maintenanceAutoparts.fetchMaintenaceByUser.url,
+          url: `${endpoints.maintenanceAutoparts.fetchMaintenaceByUser.url}/${id}`,
           method: endpoints.maintenanceAutoparts.fetchMaintenaceByUser.method,
-          params: queryParams ? queryParams : {}
+          // params: queryParams ? queryParams : {}
+        };
+      },
+      transformResponse: response => response?.data,
+    }),
+    delete: builder.mutation({
+      query: vehicleId => {
+        LOG('deleteVehicleId', vehicleId);
+        return {
+          url: `${endpoints.maintenanceAutoparts.delete.url}/${vehicleId}`,
+          method: endpoints.maintenanceAutoparts.delete.method || 'DELETE',
         };
       },
       transformResponse: response => response?.data,
@@ -35,5 +42,5 @@ export const maintenanceAutopartsApi = createApi({
   }),
 });
 
-export const { useAddMutation, useFetchMaintenanceAutopartsByUserQuery } =
+export const { useAddMutation, useFetchMaintenanceAutopartsByUserQuery, useDeleteMutation } =
   maintenanceAutopartsApi;

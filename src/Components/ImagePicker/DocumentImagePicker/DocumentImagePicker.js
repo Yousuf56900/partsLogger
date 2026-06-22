@@ -57,10 +57,6 @@ const DocumentImagePicker = forwardRef(
     }));
 
     const handleImageChange = (imagePaths, mime, type) => {
-      console.log('Selected Images:', imagePaths);
-      console.log('Selected mime:', mime);
-      console.log('Selected type:', type);
-
       if (profileImages.length + imagePaths.length > (maxLimit ? maxLimit : MAX_IMAGES)) {
         Alert.alert(
           'Limit Reached',
@@ -98,7 +94,7 @@ const DocumentImagePicker = forwardRef(
       return `${base}${path}`;
     };
 
-
+console.log('profileImages',profileImages)
     return (
       <>
         {profileImages.length > 0 && (
@@ -108,7 +104,6 @@ const DocumentImagePicker = forwardRef(
             keyExtractor={(item, index) => index.toString()}
             style={{ width: '90%' }}
             renderItem={({ item, index }) => {
-              console.log('RENDER IMAGE URI:', buildImageUri(item?.uri));
               return (
                 <View style={styles.imageContainer}>
                   <FastImage
@@ -123,16 +118,14 @@ const DocumentImagePicker = forwardRef(
                   <TouchableOpacity
                     style={styles.deleteButton}
                     onPress={() => {
-                      console.log(item, "itemitemitem")
 
-                      const updatedImages = profileImages.filter(
-                        (_, i) => i !== index,
-                      );
+                      const updatedImages = profileImages.filter((_, i) => i !== index);
                       setProfileImages(updatedImages);
 
-                      let removeImageName = extractFilenameFromUrl(item?.uri)
+                      let removeImageName = extractFilenameFromUrl(item?.uri);
 
-                      if (handleImage) handleImage({}, removeImageName);
+                      if (handleImage) handleImage(updatedImages, item);
+
                     }}>
                     <MyIcons name="closed" size={14} />
                   </TouchableOpacity>

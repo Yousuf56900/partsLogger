@@ -4,13 +4,14 @@ import CustomHeader from '../../../Components/CustomHeader';
 import CustomText from '../../../Components/wrappers/Text/CustomText';
 import { spacing } from '../../../theme/styles';
 import { colors } from '../../../theme/colors';
-import { useDeleteMutation, useFetchPartByUserQuery } from '../../../Api/partApi';
+
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { getImageUrl, LOG } from '../../../Utils/helperFunction';
 import Feather from 'react-native-vector-icons/Feather'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import routes from '../../../Navigation/routes';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
+import { useDeleteMutation, useFetchMaintenanceAutopartsByUserQuery } from '../../../Api/mainteinanceAutopartsApiSlice';
 const { width: screenWidth } = Dimensions.get('window');
 
 // Move ImageViewer component outside to avoid hook order issues
@@ -68,8 +69,8 @@ const ImageViewer = ({ visible, images, initialIndex, onClose }) => {
     );
 };
 
-// Move ImageGrid component outside as well
 const ImageGrid = ({ images, onImagePress }) => {
+
     if (!images || images.length === 0) return null;
 
     const displayedImages = images.slice(0, 4);
@@ -78,7 +79,10 @@ const ImageGrid = ({ images, onImagePress }) => {
     return (
         <View style={styles.imageGrid}>
             {displayedImages.map((imageUrl, index) => {
-                const fullUrl = `https://api.partslogger.com/uploads/${imageUrl}`;
+
+                const fullUrl = imageUrl.startsWith('http')
+                    ? imageUrl
+                    : `https://api.partslogger.com/uploads/${imageUrl}`;
                 return (
                     <TouchableOpacity
                         key={index}
@@ -113,7 +117,7 @@ const ImageGrid = ({ images, onImagePress }) => {
     );
 };
 
-const VehicleMaintenanceDetails = (props) => {
+const MaintenanceDetail = (props) => {
     const navigation = useNavigation()
     const { id } = props?.route?.params;
     const [payload, setPayload] = useState({ page: 1, limit: 1000, vehicleId: id });
@@ -132,7 +136,7 @@ const VehicleMaintenanceDetails = (props) => {
         isLoading,
         error,
         refetch,
-    } = useFetchPartByUserQuery(id, { refetchOnFocus: true, refetchOnMountOrArgChange: true, refetchOnReconnect: true });
+    } = useFetchMaintenanceAutopartsByUserQuery(id, { refetchOnFocus: true, refetchOnMountOrArgChange: true, refetchOnReconnect: true });
     LOG('vehicle::', vehicle);
 
 
@@ -142,7 +146,7 @@ const VehicleMaintenanceDetails = (props) => {
             refetch();
         }, [refetch])
     );
-    const maintenanceRecords = vehicle || [];
+    const maintenanceRecords = vehicle?.docs || [];
     const [
         deleteVehicle,
         { isLoading: deleteLoading, isError: deleteIsError, error: deleteError },
@@ -187,9 +191,10 @@ const VehicleMaintenanceDetails = (props) => {
             { cancelable: true }
         );
     };
+    console.log('maintenanceRecordsmaintenanceRecords', maintenanceRecords)
     return (
         <>
-            <CustomHeader title="Part Details" />
+            <CustomHeader title="Maintenance Details" />
             <ScrollView contentContainerStyle={styles.container}>
                 {isLoading && (
                     <View style={styles.loadingContainer}>
@@ -208,123 +213,92 @@ const VehicleMaintenanceDetails = (props) => {
                 {maintenanceRecords?.length > 0 ? (
                     <View style={styles.dataContainer}>
                         {maintenanceRecords?.map((item) => (
-                            <View key={item._id} style={styles.itemContainer}>
-                                <View style={styles.headerSection}>
+                            <View key={item._id} style={styles.card}>
+
+                                {/* Top Row */}
+                                <View style={styles.topRow}>
+                                    <View style={{ flex: 1 }}>
+                                        <CustomText
+                                            text={item.repairName}
+                                            fontWeight="bold"
+                                            style={styles.title}
+                                        />
+                                        <CustomText
+                                            text={item.vehicle}
+                                            color={colors.text.grey}
+                                            style={styles.vehicle}
+                                        />
+                                    </View>
+
                                     <View style={styles.actionRow}>
                                         <TouchableOpacity onPress={() =>
-                                            navigation.navigate(routes.main.AddPart, {
-                                                part: item,
+                                            navigation.navigate(routes.main.addmaintenancerecord, {
+                                                maintenance: item,
                                                 vehicleIdPrefilled: id
                                             })
-                                        }
-                                            style={styles.iconButton}>
+                                        } style={styles.iconBtn}>
                                             <Feather name="edit" size={18} color={colors.primary} />
                                         </TouchableOpacity>
 
-                                        <TouchableOpacity onPress={() => handleDelete(item?._id)} style={[styles.iconButton, styles.deleteButton]}>
-                                            <MaterialIcons name="delete" size={20} color="#fff" />
+                                        <TouchableOpacity onPress={() => handleDelete(item?._id)} style={styles.deleteBtn}>
+                                            <MaterialIcons name="delete" size={18} color="#fff" />
                                         </TouchableOpacity>
                                     </View>
-
-                                    <View style={styles.titleSection}>
+                                </View>
+                                <View style={styles.row}>
+                                    <View style={styles.badge}>
                                         <CustomText
-                                            text={item.name || 'Unnamed Part'}
-                                            color={colors.text.black}
-                                            style={styles.partName}
+                                            text={`${currencySymbols[item.currency] || "$"}${item.totalPrice} (${item.currency})`}
+                                            color="#000"
                                             fontWeight="bold"
                                         />
-
                                     </View>
+
                                     <CustomText
-                                        text={item.forWhat || 'General Maintenance'}
-                                        color={colors.primary}
-                                        style={styles.forWhatText}
+                                        text={new Date(item.maintenanceDate).toLocaleDateString()}
+                                        color={colors.text.grey}
                                     />
-                                    {item.price && (
-                                        <View style={styles.priceBadge}>
-                                            <CustomText
-                                                text={`Price: ${currencySymbols[item.currency] || "$"}${item.price} (${item.currency})`}
-                                                color={colors.text.white}
-                                                style={styles.priceText}
-                                            />
-                                        </View>
-                                    )}
                                 </View>
 
-                                {item.gallery && item.gallery.length > 0 && (
-                                    <View style={styles.imagesSection}>
+
+                                {/* Store */}
+                                <View style={styles.infoRow}>
+                                    <Icon name="store" size={16} color={colors.primary} />
+                                    <CustomText text={item.storeName} style={styles.infoText} />
+                                </View>
+
+                                <View style={styles.infoRow}>
+                                    <Icon name="location-on" size={16} color={colors.primary} />
+                                    <CustomText text={item.storeAddress} style={styles.infoText} />
+                                </View>
+
+
+                                {/* Warranty */}
+                                <View style={styles.infoRow}>
+                                    <Icon name="verified-user" size={16} color={colors.primary} />
+                                    <CustomText text={`Warranty: ${item.warranty}`} style={styles.infoText} />
+                                </View>
+
+
+                                {/* Comments */}
+                                {item.comments !== "" && (
+                                    <View style={styles.commentBox}>
                                         <CustomText
-                                            text="Part Images:"
-                                            color={colors.text.grey}
-                                            style={styles.sectionLabel}
-                                        />
-                                        <ImageGrid
-                                            images={item.gallery}
-                                            onImagePress={(index) => handleImagePress(item.gallery, index)}
+                                            text={item.comments}
+                                            style={styles.commentText}
                                         />
                                     </View>
                                 )}
 
-                                {/* Details Section */}
-                                <View style={styles.detailsSection}>
-                                    <View style={styles.detailRow}>
-                                        <Icon name="store" size={16} color={colors.text.grey} />
-                                        <CustomText
-                                            text={`${item.storeName || 'Unknown Store'}${item.storeAddress ? `, ${item.storeAddress}` : ''}`}
-                                            color={colors.text.grey}
-                                            style={styles.detailText}
-                                        />
-                                    </View>
-
-                                    {item.warranty && (
-                                        <View style={styles.detailRow}>
-                                            <Icon name="verified-user" size={16} color={colors.text.grey} />
-                                            <CustomText
-                                                text={`Warranty: ${item.warranty}`}
-                                                color={colors.text.grey}
-                                                style={styles.detailText}
-                                            />
-                                        </View>
-                                    )}
-
-                                    {item.purchaseDate && (
-                                        <View style={styles.detailRow}>
-                                            <Icon name="event" size={16} color={colors.text.grey} />
-                                            <CustomText
-                                                text={`Purchased: ${new Date(item.purchaseDate).toLocaleDateString()}`}
-                                                color={colors.text.grey}
-                                                style={styles.detailText}
-                                            />
-                                        </View>
-                                    )}
-
-                                    {item.installedDate && (
-                                        <View style={styles.detailRow}>
-                                            <Icon name="build" size={16} color={colors.text.grey} />
-                                            <CustomText
-                                                text={`Installed: ${new Date(item.installedDate).toLocaleDateString()}`}
-                                                color={colors.text.grey}
-                                                style={styles.detailText}
-                                            />
-                                        </View>
-                                    )}
-                                </View>
-
-                                {/* Additional Notes */}
-                                {item.notes && (
-                                    <View style={styles.notesSection}>
-                                        <CustomText
-                                            text="Notes:"
-                                            color={colors.text.black}
-                                            style={styles.notesLabel}
-                                        />
-                                        <CustomText
-                                            text={item.notes}
-                                            color={colors.text.grey}
-                                            style={styles.notesText}
-                                        />
-                                    </View>
+                                {item.gallery?.length > 0 && (
+                                    <ImageGrid
+                                        images={item.gallery}
+                                        onImagePress={(index) =>
+                                            handleImagePress(item.gallery, index)
+                                        }
+                                    />
                                 )}
+
                             </View>
                         ))}
                     </View>
@@ -353,7 +327,7 @@ const VehicleMaintenanceDetails = (props) => {
     );
 };
 
-export default VehicleMaintenanceDetails;
+export default MaintenanceDetail;
 
 const styles = StyleSheet.create({
     container: {
@@ -390,111 +364,79 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderColor: colors.border.color_1
     },
-    headerSection: {
-        marginBottom: spacing.medium,
+    card: {
+        backgroundColor: "#ffffff40",
+        borderRadius: 14,
+        padding: 16,
+        marginBottom: 15,
+        borderWidth: 1
     },
-    titleSection: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'flex-start',
-        marginBottom: spacing.small,
+
+    topRow: {
+        flexDirection: "row",
+        justifyContent: "space-between",
+        alignItems: "center",
     },
-    partName: {
+
+    title: {
         fontSize: 18,
-        flex: 1,
-        marginRight: spacing.small,
     },
-    priceBadge: {
+
+    vehicle: {
+        fontSize: 14,
+        marginTop: 3,
+    },
+
+    row: {
+        flexDirection: "row",
+        justifyContent: "space-between",
+        marginTop: 10,
+        alignItems: "center",
+    },
+
+    badge: {
         backgroundColor: colors.primary,
-        // paddingHorizontal: spacing.small,
-        paddingVertical: 4,
-        borderRadius: 12,
+        paddingHorizontal: 1,
+        paddingVertical: 5,
+        borderRadius: 20,
     },
-    priceText: {
-        fontSize: 14,
-        fontWeight: 'bold',
-        color: '#000'
+
+    infoRow: {
+        flexDirection: "row",
+        alignItems: "center",
+        marginTop: 8,
     },
-    forWhatText: {
-        fontSize: 14,
-        fontStyle: 'italic',
+
+    infoText: {
+        marginLeft: 6,
     },
-    imagesSection: {
-        marginBottom: spacing.medium,
-    },
-    sectionLabel: {
-        fontSize: 14,
-        marginBottom: spacing.small,
-        fontWeight: '500',
-    },
-    imageGrid: {
-        flexDirection: 'row',
-        flexWrap: 'wrap',
-        gap: 4,
-    },
-    imageGridItem: {
-        height: 80,
+
+    commentBox: {
+        marginTop: 10,
+        backgroundColor: "#F4F6F8",
+        padding: 10,
         borderRadius: 8,
-        overflow: 'hidden',
-        backgroundColor: colors.background.grey,
     },
-    singleImage: {
-        width: '100%',
+
+    commentText: {
+        fontSize: 13,
     },
-    doubleImage: {
-        width: '48%',
+
+    iconBtn: {
+        backgroundColor: "#F1F1F1",
+        padding: 7,
+        borderRadius: 8,
+        marginRight: 5,
     },
-    threeImageFirst: {
-        width: '100%',
-        height: 120,
+
+    deleteBtn: {
+        backgroundColor: "#E53935",
+        padding: 7,
+        borderRadius: 8,
     },
-    threeImageRest: {
-        width: '48%',
-    },
-    fourImage: {
-        width: '48%',
-        flexBasis: '48%',
-    },
-    gridImage: {
-        width: '100%',
-        height: '100%',
-    },
-    remainingOverlay: {
-        ...StyleSheet.absoluteFillObject,
-        backgroundColor: 'rgba(0,0,0,0.6)',
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    remainingText: {
-        fontSize: 16,
-        fontWeight: 'bold',
-    },
-    detailsSection: {
-        gap: 8,
-    },
-    detailRow: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        gap: spacing.small,
-    },
-    detailText: {
-        fontSize: 14,
-        flex: 1,
-    },
-    notesSection: {
-        marginTop: spacing.medium,
-        paddingTop: spacing.medium,
-        borderTopWidth: 1,
-        borderTopColor: colors.border.color_1,
-    },
-    notesLabel: {
-        fontSize: 14,
-        fontWeight: '500',
-        marginBottom: spacing.small,
-    },
-    notesText: {
-        fontSize: 14,
-        lineHeight: 20,
+
+    actionRow: {
+        flexDirection: "row"
     },
     noDataContainer: {
         alignItems: 'center',

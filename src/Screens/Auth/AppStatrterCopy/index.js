@@ -12,11 +12,12 @@ import Step01 from './FormSteps/Step01';
 import Step02 from './FormSteps/Step02';
 import Step03 from './FormSteps/Step03';
 import { useNavigation, useRoute } from '@react-navigation/native';
-import routes from '../../Navigation/routes';
-import { reduxStorage } from '../../Redux/mmkv';
+
+
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { setAuth } from '../../Redux/slices/authSlice';
 import { useDispatch } from 'react-redux';
+import { setAuth } from '../../../Redux/slices/authSlice';
+import routes from '../../../Navigation/routes';
 
 const CyroLiabilityForm = () => {
 
@@ -66,7 +67,7 @@ const CyroLiabilityForm = () => {
               // 2. navigation logic
               if (route?.params?.fromLogin) {
                 dispatch(setAuth({ user: userData?.user, token: userData?.token }));
-                navigation.replace(routes.navigator.tab); // 👈 main app (vehicles/tab)
+                navigation.replace(routes.navigator.tab);
               } else {
                 navigation.replace(routes.auth.login);
               }

@@ -157,7 +157,7 @@ const getHeaderLeft = (routeName, navigation, title) => {
   }
 };
 
-const GetTitle = ({ routeName, title, color, longtitle }) => {
+const GetTitle = ({ routeName, title, color, style }) => {
   // Check for a passed title prop first, then check if the routeName matches the titleRoutes.
   const displayTitle = title || titleRoutes[routeName];
 
@@ -171,7 +171,7 @@ const GetTitle = ({ routeName, title, color, longtitle }) => {
     return (
       <View style={{ alignSelf: 'center' }}>
         <CustomText
-          style={[styles.title]}
+          style={[styles.title,style]}
           text={displayTitle}
           numberOfLines={2}
           color={color ? color : colors?.text?.dimBlack}
@@ -244,7 +244,7 @@ const getHeaderRight = (
                   marginTop:10,
                  right:10
                 }}>
-                  <Text>EDIT</Text>
+                  <Text style={{fontWeight:'bold',color:'#00008B',fontSize:15}}>EDIT</Text>
                 {/* <MyIcons name="edit" /> */}
               </TouchableOpacity>
             </View>
@@ -276,6 +276,7 @@ const CustomHeader = ({
   disabled,
   color,
   longtitle,
+  style
 }) => {
   const isLoading = false;
   const [visible, setVisible] = useState(false);
@@ -303,6 +304,7 @@ const CustomHeader = ({
                 routeName={routeName}
                 title={title}
                 color={color}
+                style={style}
               //   username={profile?.fullName}
               />
             </View>

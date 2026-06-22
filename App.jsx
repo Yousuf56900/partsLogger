@@ -49,7 +49,7 @@ function App() {
   };
 
   return (
-    <View style={[{ flex: 1 }]}>
+    <View style={[{ flex: 1 ,borderWidth:4,borderColor:"#A57B0A"}]}>
            <StatusBar
           translucent={true}
           backgroundColor="transparent"

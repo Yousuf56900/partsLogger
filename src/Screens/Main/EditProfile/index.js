@@ -28,7 +28,6 @@ const EditProfile = () => {
   const [isModalVisible, setModalVisible] = useState(false);
 
   const userDetails = useSelector(state => state?.auth?.user || {});
-  console.log('userDetails', userDetails);
 
   const validationSchema = Yup.object().shape({
     firstName: Yup.string().required('First Name is required'),

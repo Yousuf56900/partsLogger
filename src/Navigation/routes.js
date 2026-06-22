@@ -29,6 +29,7 @@ const routes = {
     subscription: 'Subscription',
     otp: 'VerifyOtp ',
     resetPassword: 'ResetPassword ',
+    AppStarterCopy: 'AppStarterCopy',
   },
   main: {
     AppStarter: 'AppStarter',
@@ -89,8 +90,8 @@ const routes = {
     editcustomrecordscategory: 'EditCustomRecordsCategory',
     vehicleMaintenanceDetails: 'VehicleMaintenanceDetails',
     testScreen: 'TestScreen',
-    AddPart: 'AddPart'
-
+    AddPart: 'AddPart',
+    MaintenanceDetail: 'MaintenanceDetail'
     // Habbit Tracker Screen
   },
 

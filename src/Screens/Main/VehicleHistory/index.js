@@ -16,9 +16,7 @@ const VehicleHistory = () => {
   const route = useRoute();
   const {vehicleItem, selectedItem} = route.params || {};
 
-  console.log('Vehicle Item2:', vehicleItem);
   const firstSixDetails = vehicleItem?.details.slice(0, 6);
-  console.log('Selected Item:', selectedItem);
 
   const selectedMechanic = selectedItem?.name;
 

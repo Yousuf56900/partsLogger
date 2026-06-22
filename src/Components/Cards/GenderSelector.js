@@ -24,7 +24,6 @@ const GenderSelector = ({data, customStyle, boxHeight, onSelect}) => {
             key={index}
             onPress={() => {
               setSelected(index);
-              console.log('INDEX: ', item?.title);
               onSelect && onSelect(item?.title);
             }}>
             {item?.iconSrc && (

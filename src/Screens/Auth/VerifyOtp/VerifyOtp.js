@@ -21,7 +21,6 @@ const VerifyOtp = () => {
   const route = useRoute();
   const email = route.params?.email;
   const otpCode =  route.params.otp
-  console.log('otpCode',otpCode)
 
   const handleVerifyOtp = async () => {
     try {
