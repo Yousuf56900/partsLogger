@@ -1,8 +1,8 @@
-// export const baseUrl = 'https://z859ct1m-3056.inc1.devtunnels.ms/api';
+// export const baseUrl = 'https://k6sc6dps-3056.inc1.devtunnels.ms/api';
 export const baseUrl = 'https://api.partslogger.com/api';
 
-// export const imageServer = 'https://h5kqzzf8-3056.uks1.devtunnels.ms/uploads/';
-export const imageServer = 'https://api.partslogger.com/uploads';
+// export const imageServer = 'https://k6sc6dps-3056.inc1.devtunnels.ms/uploads/';
+ export const imageServer = 'https://api.partslogger.com/uploads';
 // https://h5kqzzf8-3056.uks1.devtunnels.ms/
 export const endpoints = {
   auth: {

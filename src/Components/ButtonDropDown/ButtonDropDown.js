@@ -8,14 +8,14 @@ import { MainButton } from '../Buttons/MainButton';
 
 const { width, height } = Dimensions.get('window');
 
-const DropdownActions = ({ navigation, vehicleId }) => {
+const DropdownActions = ({ navigation, vehicleId,name }) => {
     const [visible, setVisible] = useState(false);
     const [slideAnim] = useState(new Animated.Value(height));
 
     const options = [
-        { label: 'Add Parts', action: () => navigation.navigate(routes.main.AddPart, { vehicleIdPrefilled: vehicleId }) },
+        { label: 'Add Parts', action: () => navigation.navigate(routes.main.AddPart, { vehicleIdPrefilled: vehicleId ,name}) },
         { label: 'Part Details', action: () => navigation.navigate(routes.main.vehicleMaintenanceDetails, { id: vehicleId }) },
-        { label: 'Add Repair or Maintenance', action: () => navigation.navigate(routes.main.addmaintenancerecord, { vehicleIdPrefilled: vehicleId }) },
+        { label: 'Add Repair or Maintenance', action: () => navigation.navigate(routes.main.addmaintenancerecord, { vehicleIdPrefilled: vehicleId ,name}) },
         { label: 'Maintenance  Repair Details', action: () => navigation.navigate(routes.main.MaintenanceDetail, { id: vehicleId }) },
     ];
 

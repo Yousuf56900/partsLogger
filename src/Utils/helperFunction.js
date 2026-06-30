@@ -37,23 +37,29 @@ export const jsonToFormdata = data => {
 
   for (let key in data) {
     if (Array.isArray(data[key])) {
-      // Agar array gallery ka hai toh image file ke tarah append karo
-      if (key === 'gallery') {
-        data[key].forEach(item => {
+      data[key].forEach((item, index) => {
+        if (item?.uri && item?.type) {
           formData.append(key, {
             uri: item.uri,
-            name: item.name,
+            name: item.name || `${key}_${index}`,
             type: item.type,
           });
-        });
-      } else {
-        // Kisi aur array ko simple append karna hai
-        data[key].forEach((item, index) => {
+        } else {
           formData.append(`${key}[${index}]`, item);
-        });
-      }
+        }
+      });
+    } else if (
+      data[key] !== null &&
+      typeof data[key] === 'object' &&
+      data[key].uri &&
+      data[key].type
+    ) {
+      formData.append(key, {
+        uri: data[key].uri,
+        name: data[key].name || key,
+        type: data[key].type,
+      });
     } else {
-      // Simple key-value append
       formData.append(key, data[key]);
     }
   }
@@ -192,25 +198,52 @@ export const getFullName = (firstName = '', lastName = '') => {
 //   // Image compatible return
 //   return {uri: finalUrl, priority: Image.priority.high};
 // };
+export const getFirstGalleryImage = gallery => {
+  if (!gallery) {
+    return null;
+  }
+
+  if (Array.isArray(gallery)) {
+    return gallery[0] ?? null;
+  }
+
+  if (typeof gallery === 'string') {
+    return gallery;
+  }
+
+  if (typeof gallery === 'object' && gallery?.uri) {
+    return gallery.uri;
+  }
+
+  return null;
+};
+
 export const getImageUrl = (uri = '') => {
-  LOG('uri', uri);
   if (!uri) {
     return {
-      uri: 'https://dummyimage.com/600x400/cccccc/000000.jpg',
+      uri: 'https://dummyimage.com/600x400/cccccc/000000.jpg&text=No+Image',
     };
   }
 
   if (typeof uri === 'number') {
-    return uri; // local static image ke liye
+    return uri;
   }
 
-  let finalUrl = '';
-
-  if (uri?.startsWith('http')) {
-    finalUrl = uri;
-  } else {
-    finalUrl = `${imageServer}${uri.startsWith('/') ? uri : `/${uri}`}`;
+  if (typeof uri === 'object' && uri?.uri) {
+    return getImageUrl(uri.uri);
   }
+
+  const path = String(uri);
+
+  if (path.startsWith('http') || path.startsWith('file://')) {
+    return { uri: path };
+  }
+
+  const base = imageServer.endsWith('/')
+    ? imageServer.slice(0, -1)
+    : imageServer;
+  const normalizedPath = path.replace(/^\/?uploads\//, '');
+  const finalUrl = `${base}/${normalizedPath.replace(/^\//, '')}`;
 
   return { uri: finalUrl };
 };

@@ -48,8 +48,10 @@ const EditProfile = () => {
       firstName: values?.firstName,
       lastName: values?.lastName,
       phone: values.phoneNumber,
-      image: profileImage || '',
     };
+    if (profileImage) {
+      updatedProfileObj.image = profileImage;
+    }
 
     // Call executeApiRequest with the update mutation
     const response = await executeApiRequest({

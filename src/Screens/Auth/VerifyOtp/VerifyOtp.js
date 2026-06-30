@@ -3,7 +3,7 @@ import { View, TouchableOpacity, Text, StyleSheet } from 'react-native';
 import axios from 'axios';
 import { baseUrl } from '../../../Api/configs';
 import Container from '../../../Components/Container';
-import { MainButton } from '../../../Components/Buttons/MainButton';
+import { MainButton, MainButtonWithGradient } from '../../../Components/Buttons/MainButton';
 import { showToast } from '../../../Utils/toast';
 import { vh } from '../../../theme/units';
 import CustomText from '../../../Components/wrappers/Text/CustomText';
@@ -81,7 +81,7 @@ const VerifyOtp = () => {
             color={colors.theme.secondary}
           />
         ) : (
-       <MainButton title="Verify" onPress={handleVerifyOtp} />
+       <MainButtonWithGradient title="Verify" onPress={handleVerifyOtp} />
         )}
       
       <TouchableOpacity onPress={handleResendOtp} style={{ marginTop: 15 }}>

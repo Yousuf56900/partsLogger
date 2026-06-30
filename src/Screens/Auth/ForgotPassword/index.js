@@ -4,7 +4,7 @@ import axios from 'axios';
 import { baseUrl } from '../../../Api/configs';
 import Container from '../../../Components/Container';
 import InputField from '../../../Components/InputField';
-import { MainButton } from '../../../Components/Buttons/MainButton';
+import { MainButton, MainButtonWithGradient } from '../../../Components/Buttons/MainButton';
 import { showToast } from '../../../Utils/toast';
 import { vh } from '../../../theme/units';
 import CustomText from '../../../Components/wrappers/Text/CustomText';
@@ -73,7 +73,7 @@ const ForgotPasswordEmail = () => {
             color={colors.theme.secondary}
           />
         ) : (
-          <MainButton title="Send OTP" onPress={handleSendOtp} />
+          <MainButtonWithGradient title="Reset Password" onPress={handleSendOtp} />
         )}
 
       </Container>

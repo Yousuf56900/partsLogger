@@ -31,7 +31,7 @@ const Step02 = ({titleData, banner, onButtonNext}) => {
       {banner && (
         <>
           <Image
-            source={appImages.tractor}
+            source={appImages.coupe1930}
             resizeMode="contain"
             style={[styles.banner, {height: 200, width: '80%', alignSelf: 'center'}]}
           />
@@ -47,6 +47,17 @@ const Step02 = ({titleData, banner, onButtonNext}) => {
             1930 Coupe
           </Text>
 
+          <Image
+            source={appImages.fordLogo}
+            resizeMode="contain"
+            style={{
+              height: 90,
+              width: 90,
+              alignSelf: 'center',
+              marginTop: 8,
+            }}
+          />
+
           <TouchableOpacity onPress={openWebsite}>
             <Text
               style={{
@@ -54,7 +65,7 @@ const Step02 = ({titleData, banner, onButtonNext}) => {
                 color: '#0000A3',
                 textDecorationLine: 'underline',
                 fontSize: 16,
-                marginTop: 5,
+                marginTop: 8,
               }}>
               www.partslogger.com
             </Text>

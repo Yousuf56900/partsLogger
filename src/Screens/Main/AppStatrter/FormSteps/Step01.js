@@ -11,12 +11,12 @@ import { styles } from '../styles';
 const Step01 = ({ titleData, banner, onButtonNext }) => {
 
   const carPartsImages = [
-    appImages.appStarter1,
-    appImages.appstarter2,
-    appImages.appStarter,
-    appImages.appstarter,
-    appImages.autopartrecord,
-    appImages.maintenancerecord,
+    appImages.vehicle3,          // SUV
+    appImages.appstarter2,       // Engine
+    appImages.autopartrecord,    // Shelves with parts
+    appImages.appStarter1,       // Starter
+    appImages.maintenancerecord, // Mechanic
+    appImages.appStarter,        // Filters
   ];
 
   return (
@@ -25,17 +25,17 @@ const Step01 = ({ titleData, banner, onButtonNext }) => {
       {titleData && (
         <View style={{ marginHorizontal: "5%" }}>
           <CustomText
-            text={`Everything About Your Car in One Place`}
+            text={`Everything About Your Car! Description, Pics, Parts, Maintenance, Warranty & Notes`}
             size={vh * 2.2}
             color={colors.text.dimBlack}
             style={{ fontWeight: 'bold' }}
           />
 
-          <CustomText
+          {/* <CustomText
             text={`Take Pics of your receipts`}
             size={vh * 2.7}
             style={{ marginBottom: 10, fontWeight: '600' }}
-          />
+          /> */}
         </View>
       )}
 

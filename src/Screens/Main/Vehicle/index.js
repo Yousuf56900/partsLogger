@@ -20,17 +20,24 @@ import { font } from '../../../theme/styles';
 import styles from '../Home/styles';
 import { colors } from '../../../theme/colors';
 import { useFocusEffect } from '@react-navigation/native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { appImages } from '../../../Assets/Images';
 
 const { height } = Dimensions.get('screen');
 
 const Vehicle = ({ navigation }) => {
   const scrollRef = useRef(null);
+  const insets = useSafeAreaInsets();
   const [refreshing, setRefreshing] = useState(false);
   const [showScrollTop, setShowScrollTop] = useState(false);
+  const tabBarOffset = 90 + insets.bottom;
 
   const { data, isLoading, error, refetch } =
-    useFetchVehicleByUserQuery();
+    useFetchVehicleByUserQuery(undefined, {
+      refetchOnMountOrArgChange: true,
+      refetchOnFocus: true,
+      refetchOnReconnect: true,
+    });
 
   useFocusEffect(
     useCallback(() => {
@@ -80,7 +87,7 @@ const Vehicle = ({ navigation }) => {
   );
 
   const VehiclesList = () => (
-    <View style={{ paddingBottom: height * 0.15 }}>
+    <View style={{ paddingBottom: tabBarOffset }}>
       {/* <View
         style={{
           marginHorizontal: 16,
@@ -130,6 +137,7 @@ const Vehicle = ({ navigation }) => {
             onPress={() =>
               navigation.navigate(routes.main.vehicleDetails, {
                 vehicleId: item._id,
+                carItem:item
               })
             }
           />
@@ -145,7 +153,7 @@ const Vehicle = ({ navigation }) => {
       <ScrollView
         ref={scrollRef}
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ paddingBottom: 120 }}
+        contentContainerStyle={{ paddingBottom: tabBarOffset + 30 }}
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
@@ -171,7 +179,7 @@ const Vehicle = ({ navigation }) => {
           style={{
             position: 'absolute',
             right: 20,
-            bottom: 80,
+            bottom: tabBarOffset,
             backgroundColor: colors.theme.secondary,
             width: 52,
             height: 52,

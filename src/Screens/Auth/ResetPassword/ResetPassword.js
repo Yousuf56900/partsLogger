@@ -86,7 +86,7 @@ const ResetPassword = () => {
                     color={colors.theme.secondary}
                 />
             ) : (
-                <MainButton title="Reset Password" onPress={handleResetPassword} />
+                <MainButtonWithGradient title="Reset Password" onPress={handleResetPassword} />
             )}
 
         </Container>

@@ -69,6 +69,7 @@ const AddPart = ({ navigation, route }) => {
   const [isLoading, setIsLoading] = useState(false);
   const token = useSelector(state => state?.auth?.token);
   const part = route.params?.part || null;
+  const vehicleName = route.params?.name
   const vehicleId = route.params?.vehicleIdPrefilled || part?.vehicleId?._id;
   const currencyOptions = [
     { label: 'USD', value: 'USD' },
@@ -159,15 +160,15 @@ const AddPart = ({ navigation, route }) => {
   const handleSubmitForm = async (values) => {
     const payload = {
       vehicleId,
-      name: values.name,
+      name: vehicleName,
       forWhat: values.forWhat,
       price: values.price,
       storeName: values.storeName,
       storeAddress: values.storeAddress,
       warranty: values.warranty,
       purchaseDate: values.purchaseDate,
-      gallery: values.gallery, 
-        currency: values.currency,
+      gallery: values.gallery,
+      currency: values.currency,
     };
 
     try {
@@ -216,159 +217,170 @@ const AddPart = ({ navigation, route }) => {
       <CustomHeader title={part ? 'Edit Part' : 'Add Part'} />
       <KeyboardAwareScrollView
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ flexGrow: 1 }}
+        contentContainerStyle={{ flexGrow: 1, paddingBottom: "12%" }}
         enableOnAndroid={true}
         keyboardShouldPersistTaps="handled"
         extraScrollHeight={vh * 10}>
-        <ScrollView
-          showsVerticalScrollIndicator={false}
-          contentContainerStyle={{ flexGrow: 1,paddingBottom:"12%" }}>
-          <Formik
-            initialValues={initialValues}
-            validationSchema={partValidation}
-            onSubmit={handleSubmitForm}>
-            {({
-              handleChange,
-              handleBlur,
-              handleSubmit,
-              values,
-              errors,
-              touched,
-              setFieldValue,
-            }) => (
-              <View style={styles.container}>
+        <Formik
+          initialValues={initialValues}
+          validationSchema={partValidation}
+          onSubmit={handleSubmitForm}>
+          {({
+            handleChange,
+            handleBlur,
+            handleSubmit,
+            values,
+            errors,
+            touched,
+            setFieldValue,
+          }) => (
+            <View style={styles.container}>
+              <View
+                style={[styles.detailContainer, { paddingHorizontal: spacing.large }]}>
                 <View
-                  style={[styles.detailContainer, { paddingHorizontal: spacing.large }]}>
-                  <View style={{ alignItems: 'center', marginTop: vh * 4 }}>
-                    <InputField
-                      label="Vehicle"
-                      placeholder="Enter Vehicle Name"
-                      onChangeText={handleChange('forWhat')}
-                      onBlur={handleBlur('forWhat')}
-                      value={values.forWhat}
-                      style={{ width: vw * 85, marginBottom: vh * 5 }}
-                      errors={touched.forWhat && errors.forWhat}
-                    />
-                    <InputField
-                      label="Part Name"
-                      placeholder="Enter Part Name"
-                      onChangeText={handleChange('name')}
-                      onBlur={handleBlur('name')}
-                      value={values.name}
-                      style={{ width: vw * 85, marginBottom: vh * 5 }}
-                      errors={touched.name && errors.name}
-                    />
-                    <CustomDatePicker
-                      dateStyle={{ width: vw * 80, marginBottom: vh * 5, backgroundColor: '#fff' }}
-                      labelStyle={{ marginLeft: 20 }}
-                      date={values.purchaseDate ? new Date(values.purchaseDate) : null}
-                      label="Purchase Date"
-                      onDateChange={date => setFieldValue('purchaseDate', date.toISOString())}
-                      errors={touched.purchaseDate && errors.purchaseDate}
-                    />
-                    <InputField
-                      label="Warranty"
-                      placeholder="Enter Warranty"
-                      onChangeText={handleChange('warranty')}
-                      onBlur={handleBlur('warranty')}
-                      value={values.warranty}
-                      style={{ width: vw * 85, marginBottom: vh * 5 }}
-                      errors={touched.warranty && errors.warranty}
-                    />
-                    <InputField
-                      label="Price"
-                      placeholder="Enter Price"
-                      keyboardType={'decimal-pad'}
-                      onChangeText={handleChange('price')}
-                      onBlur={handleBlur('price')}
-                      value={values.price}
-                      style={{ width: vw * 85, marginBottom: vh * 5 }}
-                      errors={touched.price && errors.price}
-                    />
-                    <View style={{ width: vw * 81, marginBottom: vh * 5, }}>
-                      <Text style={{ marginBottom: 2, fontWeight: '500' }}>
-                        Currency
-                      </Text>
-                      <SelectList
-                        data={currencyOptions}
-                        setSelected={(val) => setFieldValue("currency", val)}
-                        defaultOption={{ key: values.currency, value: values.currency }}
-                        boxStyles={{
-                          borderColor: "#ccc",
-                          borderRadius: 8,
-                          borderRadius:35
-                        }}
-                        dropdownStyles={{
-                          borderColor: "#ccc",
-                          borderRadius:15
-                        }}
-                      />
+                  style={{
+                    width: vw * 85,
+                    height: 55,
+                    borderWidth: 1,
+                    borderColor: "#D9D9D9",
+                    borderRadius: 35,
+                    justifyContent: "center",
+                    paddingHorizontal: 20,
+                    marginBottom: vh * 1,
+                    backgroundColor: "#FAFAFA",
+                  }}
+                >
+                  <Text
+                    style={{
+                      color: "#111",
+                      fontSize: 16,
+                      fontWeight: "600",
+                    }}
+                  >
+                    {vehicleName}
+                  </Text>
+                </View>
+                <View style={{ alignItems: 'center', marginTop: vh * 4 }}>
 
-                    </View>
-                    <InputField
-                      label="Store Name"
-                      placeholder="Enter Store Name"
-                      onChangeText={handleChange('storeName')}
-                      onBlur={handleBlur('storeName')}
-                      value={values.storeName}
-                      style={{ width: vw * 85, marginBottom: vh * 5 }}
-                      errors={touched.storeName && errors.storeName}
+                  <InputField
+                    label="Part Name"
+                    placeholder="Enter Part Name"
+                    onChangeText={handleChange('name')}
+                    onBlur={handleBlur('name')}
+                    value={values.name}
+                    style={{ width: vw * 85, marginBottom: vh * 5 }}
+                    errors={touched.name && errors.name}
+                  />
+                  <CustomDatePicker
+                    dateStyle={{ width: vw * 80, marginBottom: vh * 5, backgroundColor: '#fff' }}
+                    labelStyle={{ marginLeft: 20 }}
+                    date={values.purchaseDate ? new Date(values.purchaseDate) : null}
+                    label="Purchase Date"
+                    onDateChange={date => setFieldValue('purchaseDate', date.toISOString())}
+                    errors={touched.purchaseDate && errors.purchaseDate}
+                  />
+                  <InputField
+                    label="Warranty"
+                    placeholder="Enter Warranty"
+                    onChangeText={handleChange('warranty')}
+                    onBlur={handleBlur('warranty')}
+                    value={values.warranty}
+                    style={{ width: vw * 85, marginBottom: vh * 5 }}
+                    errors={touched.warranty && errors.warranty}
+                  />
+                  <InputField
+                    label="Price"
+                    placeholder="Enter Price"
+                    keyboardType={'decimal-pad'}
+                    onChangeText={handleChange('price')}
+                    onBlur={handleBlur('price')}
+                    value={values.price}
+                    style={{ width: vw * 85, marginBottom: vh * 5 }}
+                    errors={touched.price && errors.price}
+                  />
+                  <View style={{ width: vw * 81, marginBottom: vh * 5, }}>
+                    <Text style={{ marginBottom: 2, fontWeight: '500' }}>
+                      Currency
+                    </Text>
+                    <SelectList
+                      data={currencyOptions}
+                      setSelected={(val) => setFieldValue("currency", val)}
+                      defaultOption={{ key: values.currency, value: values.currency }}
+                      boxStyles={{
+                        borderColor: "#ccc",
+                        borderRadius: 8,
+                        borderRadius: 35
+                      }}
+                      dropdownStyles={{
+                        borderColor: "#ccc",
+                        borderRadius: 15
+                      }}
                     />
-                    <InputField
-                      label="Store Address"
-                      placeholder="Enter Store Address"
-                      onChangeText={handleChange('storeAddress')}
-                      onBlur={handleBlur('storeAddress')}
-                      value={values.storeAddress}
-                      style={{ width: vw * 85, marginBottom: vh * 5 }}
-                      errors={touched.storeAddress && errors.storeAddress}
-                    />
-                    <DocumentImagePicker
-                      label="Upload Receipt Image"
-                      handleImage={img => setFieldValue('gallery', img)}
-                      errors={touched.gallery && errors.gallery}
-                      initialImages={values.gallery}
-                    />
-                    {isLoading ? (
-                      <ActivityLoader
-                        style={{ marginTop: spacing.medium }}
-                        color={colors.theme.secondary}
-                      />
-                    ) : (
-                      <View style={{ marginTop: spacing.medium }}>
-                        <MainButtonWithGradient
-                          title={part ? 'Update Part' : 'Add Part'}
-                          onPress={handleSubmit}
-                          style={{ width: vw * 80, alignSelf: 'center' }}
-                        />
-                      </View>
-                    )}
+
                   </View>
+                  <InputField
+                    label="Store Name"
+                    placeholder="Enter Store Name"
+                    onChangeText={handleChange('storeName')}
+                    onBlur={handleBlur('storeName')}
+                    value={values.storeName}
+                    style={{ width: vw * 85, marginBottom: vh * 5 }}
+                    errors={touched.storeName && errors.storeName}
+                  />
+                  <InputField
+                    label="Store Address"
+                    placeholder="Enter Store Address"
+                    onChangeText={handleChange('storeAddress')}
+                    onBlur={handleBlur('storeAddress')}
+                    value={values.storeAddress}
+                    style={{ width: vw * 85, marginBottom: vh * 5 }}
+                    errors={touched.storeAddress && errors.storeAddress}
+                  />
+                  <DocumentImagePicker
+                    label="Upload Receipt Image"
+                    handleImage={img => setFieldValue('gallery', img)}
+                    errors={touched.gallery && errors.gallery}
+                    initialImages={values.gallery}
+                  />
+                  {isLoading ? (
+                    <ActivityLoader
+                      style={{ marginTop: spacing.medium }}
+                      color={colors.theme.secondary}
+                    />
+                  ) : (
+                    <View style={{ marginTop: spacing.medium }}>
+                      <MainButtonWithGradient
+                        title={part ? 'Update Part' : 'Add Part'}
+                        onPress={handleSubmit}
+                        style={{ width: vw * 80, alignSelf: 'center' }}
+                      />
+                    </View>
+                  )}
                 </View>
               </View>
-            )}
-          </Formik>
+            </View>
+          )}
+        </Formik>
 
-          <ModalComponent
-            isVisible={isModalVisible}
-            onClose={() => setModalVisible(false)}
-            onPressCross={() => {
-              setModalVisible(false);
-              setTimeout(() => {
-                navigation?.pop(2);
-              }, 1000);
-            }}
-            title={part ? "Part Updated" : "Part Added"}
-            message={part ? "You have successfully updated the part!" : "You have successfully added a new part!"}
-            buttonText="Got it"
-            onButtonPress={() => {
-              setModalVisible(false);
-              setTimeout(() => {
-                navigation?.pop(2);
-              }, 1000);
-            }}
-          />
-        </ScrollView>
+        <ModalComponent
+          isVisible={isModalVisible}
+          onClose={() => setModalVisible(false)}
+          onPressCross={() => {
+            setModalVisible(false);
+            setTimeout(() => {
+              navigation?.pop(2);
+            }, 1000);
+          }}
+          title={part ? "Part Updated" : "Part Added"}
+          message={part ? "You have successfully updated the part!" : "You have successfully added a new part!"}
+          buttonText="Got it"
+          onButtonPress={() => {
+            setModalVisible(false);
+            setTimeout(() => {
+              navigation?.pop(2);
+            }, 1000);
+          }}
+        />
       </KeyboardAwareScrollView>
     </>
   );

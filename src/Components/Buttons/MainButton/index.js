@@ -32,21 +32,20 @@ const MainButton = ({
         {icon ? (
           <MyIcons name={'backIcon'} />
         ) : (
-          <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center", alignSelf: "center" }}>
+          <>
             <CustomText
               text={title}
               style={[styles.textStyle, textStyle]}
-              // font={fonts.benzin.semibold}
             />
-            {(() => {
-
-              if (!hideIcon) {
-                return <Feather name={'arrow-right'} color="#fff" size={16} />;
-              } else if (hideIcon) {
-                return <Feather name={'arrow-right'} color="#ffffff05" size={vh * 2} />;
-              }
-            })()}
-          </View>
+            {!hideIcon && (
+              <Feather
+                name={'arrow-right'}
+                color="#fff"
+                size={16}
+                style={{ position: 'absolute', right: 16 }}
+              />
+            )}
+          </>
         )}
       </LinearGradient>
     </TouchableOpacity>

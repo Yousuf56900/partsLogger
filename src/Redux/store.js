@@ -40,7 +40,7 @@ import { partApi } from '../Api/partApi';
 const persistConfig = {
   key: 'root',
   storage: reduxStorage,
-  // whitelist: ['auth'], // Only persist specific reducers
+  whitelist: ['auth'],
 };
 
 export const persistedReducer = persistReducer(persistConfig, rootReducer);

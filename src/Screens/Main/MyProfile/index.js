@@ -23,7 +23,7 @@ const MyProfile = () => {
 
   const {data, isLoading, isFetching, error, refetch} =
     useFetchPaymentByUserIDQuery();
-  LOG('USER DATA: ', data);
+  LOG('USER DATA:--- ', data);
 
   const subscriptionData = data || [];
   LOG('SUBS: ', subscriptionData);

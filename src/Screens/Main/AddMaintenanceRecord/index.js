@@ -1,32 +1,27 @@
 import { useNavigation } from '@react-navigation/native';
 import { Formik } from 'formik';
 import React, { useEffect, useRef, useState } from 'react';
-import { ScrollView, Text, View } from 'react-native';
+import { KeyboardAvoidingView, Platform, ScrollView, Text, View } from 'react-native';
 import { useSelector } from 'react-redux';
-import * as Yup from 'yup';
-import { executeApiRequest, executeApiRequestForQueryParams } from '../../../Api/methods/method';
 import { useFetchVehicleByUserQuery } from '../../../Api/vehiclesApiSlice';
 import CustomHeader from '../../../Components/CustomHeader';
 import InputField from '../../../Components/InputField';
 import ModalComponent from '../../../Components/ModalComponent';
 import { MainButton } from '../../../Components/Buttons/MainButton';
-import DropDown from '../../../Components/DropDown/dropdown2';
 import routes from '../../../Navigation/routes';
 import { colors } from '../../../theme/colors';
+import { spacing } from '../../../theme/styles';
 import { styles } from './styles';
 import { LOG } from '../../../Utils/helperFunction';
 import { vh, vw } from '../../../theme/units';
-import { useAddMutation } from '../../../Api/mainteinanceAutopartsApiSlice';
+
 import DocumentImagePicker from '../../../Components/ImagePicker/DocumentImagePicker/DocumentImagePicker';
 import CustomDatePicker from '../../../Components/CustomDatePicker';
 import ActivityLoader from '../../../Components/ActivityLoader';
 import { baseUrl, endpoints, imageServer } from '../../../Api/configs';
 import { SelectList } from 'react-native-dropdown-select-list';
 
-const WarrantyOptions = [
-  { key: '0', value: 'YES', id: 'YES' },
-  { key: '1', value: 'NO', id: 'NO' },
-];
+
 const uploadPartWithXHR = ({ urlPath, method, formData, token }) => {
   return new Promise((resolve, reject) => {
     const fullUrl = urlPath.startsWith('http') ? urlPath : `${baseUrl.replace(/\/$/, '')}/${urlPath.replace(/^\//, '')}`;
@@ -64,10 +59,9 @@ const uploadPartWithXHR = ({ urlPath, method, formData, token }) => {
 };
 
 const AddMaintenanceRecord = ({ route }) => {
-  const { maintenance, vehicleIdPrefilled } = route.params || {};
+  const { maintenance, vehicleIdPrefilled ,name} = route.params || {};
   const navigation = useNavigation();
   const formikRef = useRef(null);
-  const [add] = useAddMutation();
   const token = useSelector(state => state?.auth?.token);
   const [isModalVisible, setModalVisible] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -79,18 +73,7 @@ const currencyOptions = [
   { key: 'EU', value: 'EU' },
   { key: 'GBD', value: 'GBD' },
 ];
-  const userDetails = useSelector(state => state?.auth?.user || {});
-  const userId = userDetails?._id;
-
   const { data: vehicleData } = useFetchVehicleByUserQuery();
-
-  const Vehicles = Array.isArray(vehicleData)
-    ? vehicleData.map((v, index) => ({
-      key: index,
-      value: v?.vehicleDetails?.make ?? '',
-      id: v?._id ?? '',
-    }))
-    : [];
 
   useEffect(() => {
     if (vehicleIdPrefilled && formikRef.current) {
@@ -152,7 +135,8 @@ const currencyOptions = [
     Object.keys(data).forEach(key => {
       if (key === 'gallery' && Array.isArray(data[key])) {
         data[key].forEach((image, index) => {
-          if (image.uri.startsWith('file://')) {
+          const isLocalFile = image.uri && !image.uri.startsWith('http');
+          if (isLocalFile) {
             formData.append('gallery', {
               uri: image.uri,
               type: getMimeType(image.uri, image.type || 'image/jpeg'),
@@ -175,8 +159,9 @@ const currencyOptions = [
 
     return formData;
   };
-  const handleSubmitForm = async (values, { resetForm }) => {
+  const handleSubmitForm = async (values) => {
     setIsSubmitting(true);
+    setIsLoading(true);
     try {
 
       const payload = {
@@ -188,7 +173,7 @@ const currencyOptions = [
         totalPrice: values.totalPrice,
         warranty: values.warranty,
         comments: values.comments,
-        vehicle: values.vehicle,
+        vehicle: name,
         gallery: values.gallery,
          currency: values.currency,
         
@@ -225,6 +210,7 @@ const currencyOptions = [
         navigation.navigate(routes.auth.login);
       }
     } finally {
+      setIsSubmitting(false);
       setIsLoading(false);
     }
   }
@@ -232,7 +218,14 @@ const currencyOptions = [
   return (
     <>
       <CustomHeader routeName={routes.main.addmaintenancerecord} longtitle />
-      <ScrollView contentContainerStyle={{ padding: 16 ,paddingBottom:"20%"}}>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+        style={{ flex: 1 }}
+      >
+      <ScrollView
+        contentContainerStyle={{ padding: 16 ,paddingBottom:"20%"}}
+        keyboardShouldPersistTaps='handled'
+        >
         <Formik
           innerRef={formikRef}
           initialValues={initialValues}
@@ -240,13 +233,29 @@ const currencyOptions = [
         >
           {({ handleSubmit, values, setFieldValue }) => (
             <View style={{ gap: 15 }}>
-
-              <InputField
-                label="Vehicle"
-                placeholder="Enter Vehicle"
-                value={values.vehicle}
-                onChangeText={text => setFieldValue('vehicle', text)}
-              />
+     <View
+                  style={{
+                    width: vw * 85,
+                    height: 55,
+                    borderWidth: 1,
+                    borderColor: "#D9D9D9",
+                    borderRadius: 35,
+                    justifyContent: "center",
+                    paddingHorizontal: 20,
+                    marginBottom: vh * 1,
+                    backgroundColor: "#FAFAFA",
+                  }}
+                >
+                  <Text
+                    style={{
+                      color: "#111",
+                      fontSize: 16,
+                      fontWeight: "600",
+                    }}
+                  >
+                    {name}
+                  </Text>
+                </View>
               <InputField
                 label="Repair Name"
                 placeholder="Enter Repair Name"
@@ -345,9 +354,7 @@ const currencyOptions = [
                 <MainButton
                   title={maintenance ? "Edit Maintenance Record" : "Add Maintenance Record"}
                   onPress={handleSubmit}
-                  disabled={isSubmitting
-
-                  }
+                  disabled={isSubmitting}
                   hideIcon
                 />
               )}
@@ -373,6 +380,7 @@ const currencyOptions = [
           }}
         />
       </ScrollView>
+      </KeyboardAvoidingView>
     </>
   );
 };

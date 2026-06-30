@@ -4,7 +4,7 @@ import { Formik } from 'formik';
 import React, { useState } from 'react';
 import { Platform, View } from 'react-native';
 import AuthTextButton from '../../../Components/AuthTextButton';
-import { MainButton } from '../../../Components/Buttons/MainButton';
+import { MainButton, MainButtonWithGradient } from '../../../Components/Buttons/MainButton';
 import CheckBox from '../../../Components/CheckBox';
 import Container from '../../../Components/Container';
 import InputField from '../../../Components/InputField';
@@ -263,7 +263,7 @@ const SignupScreen = ({ initialFormData = {}, isEdit = false }) => {
                   {isLoading ? (
                     <ActivityLoader color={colors.theme.secondary} />
                   ) : (
-                    <MainButton
+                    <MainButtonWithGradient
                       style={styles.submitButton}
                       title={'Register Now'}
                       disabled={

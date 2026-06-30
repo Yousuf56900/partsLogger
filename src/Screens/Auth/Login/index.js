@@ -61,6 +61,7 @@ const LoginScreen = () => {
       console.log('Login Error:', err);
     }
   };
+
   const navigateToForgotPassword = () =>
     navigation.navigate(routes.auth.forgot);
   return (
@@ -111,7 +112,7 @@ const LoginScreen = () => {
                   <View style={{ marginBottom: spacing?.large }}>
                     <InputField
                       label="Email Address"
-                      placeholder="Enter Email Address"
+                      placeholder="Remember login name"
                       required
                       autoCapitalize={'none'}
                       onChangeText={handleChange('email')}
@@ -122,7 +123,7 @@ const LoginScreen = () => {
                   </View>
                   <InputField
                     label="Password"
-                    placeholder="Enter Password"
+                    placeholder="Remember password"
                     onChangeText={handleChange('password')}
                     required
                     password

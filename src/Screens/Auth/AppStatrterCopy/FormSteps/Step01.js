@@ -29,7 +29,7 @@ const Step01 = ({titleData, banner, onButtonNext}) => {
             style={{marginBottom:10}}
           />
           <CustomText
-            text={`keep record for all your parts`}
+            text={`Everything about your car in one place.`}
             size={font.medium}
             font={fonts.benzin.regular}
             color={colors.text.dimBlack}

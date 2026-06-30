@@ -6,6 +6,7 @@ import {
   View,
 } from 'react-native';
 import SplashScreen from 'react-native-splash-screen';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import { Provider, useDispatch } from 'react-redux';
 import Navigator from './src/Navigation/Navigator';
@@ -49,20 +50,21 @@ function App() {
   };
 
   return (
-    <View style={[{ flex: 1 ,borderWidth:4,borderColor:"#A57B0A"}]}>
-           <StatusBar
+    <SafeAreaProvider>
+      <View style={[{ flex: 1 ,borderWidth:4,borderColor:"#A57B0A"}]}>
+        <StatusBar
           translucent={true}
           backgroundColor="transparent"
-       barStyle={!isDarkMode ? 'light-content' : 'dark-content'}
+          barStyle={!isDarkMode ? 'light-content' : 'dark-content'}
         />
-      <Provider store={store}>
-        <PersistGate loading={null} persistor={persistor}>
-          {/* <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} /> */}
-          <Navigator />
-          <Toast topOffset={70} config={toastConfig} />
-        </PersistGate>
-      </Provider>
-    </View>
+        <Provider store={store}>
+          <PersistGate loading={null} persistor={persistor}>
+            <Navigator />
+            <Toast topOffset={70} config={toastConfig} />
+          </PersistGate>
+        </Provider>
+      </View>
+    </SafeAreaProvider>
   );
 }
 

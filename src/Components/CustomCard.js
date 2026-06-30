@@ -3,7 +3,7 @@ import { Dimensions, FlatList, Image, StyleSheet, Text, TouchableOpacity, View }
 import fonts from '../Assets/fonts';
 import { appShadow, colors } from '../theme/colors';
 import { font } from '../theme/styles';
-import { getImageUrl, LOG } from '../Utils/helperFunction';
+import { getFirstGalleryImage, getImageUrl } from '../Utils/helperFunction';
 import CustomIcon from './CustomIcon';
 import CustomText from './wrappers/Text/CustomText';
 import { appImages } from '../Assets/Images';
@@ -29,49 +29,38 @@ const CustomCard = ({
   onDeletePress,
 }) => {
   const [isFavorite, setIsFavorite] = useState(false);
-  let imgSrc = couponCard && getImageUrl(item?.gallery[0]);
+  const galleryImage = getFirstGalleryImage(item?.gallery);
+  const imageUrl = galleryImage ? getImageUrl(galleryImage) : null;
   let title = couponCard && `${item?.vehicleDetails?.make ? item?.vehicleDetails?.make : "Default Vehicle"} ${item?.vehicleDetails?.model ? item?.vehicleDetails?.model : ""}`
 
 
 
   // Function to render single image
-  const renderSingleImage = () => {
-    if (!item?.gallery || item.gallery.length === 0) {
-      return (
-        <TouchableOpacity activeOpacity={0.9} onPress={() => [setIsFavorite(true)]}>
-          <CustomIcon
-            src={null}
-            disabled={true}
-            customIconWrapper={[styles.eventImg, { height: height * 0.232 }]}
-            resizeMode={'cover'}
-            customIconStyle={{
-              borderTopLeftRadius: 10,
-              borderTopRightRadius: 10,
-            }}
-          />
-        </TouchableOpacity>
-
-      );
-    }
-
-    const imageUrl = getImageUrl(item.gallery[0]);
-
-    return (
-      <TouchableOpacity style={{ gap: 10 }} activeOpacity={0.9} onPress={() => [setIsFavorite(true)]}>
-        <CustomIcon
-          src={imageUrl}
-          disabled={true}
-          customIconWrapper={[styles.eventImg, { height: height * 0.232 }]}
-          resizeMode={'cover'}
-          customIconStyle={{
-            borderTopLeftRadius: 10,
-            borderTopRightRadius: 10,
-          }}
+  const renderSingleImage = () => (
+    <TouchableOpacity
+      style={{ gap: 10 }}
+      activeOpacity={0.9}
+      onPress={() => setIsFavorite(true)}>
+      <CustomIcon
+        key={imageUrl?.uri || item?._id}
+        src={imageUrl}
+        disabled={true}
+        customIconWrapper={[styles.eventImg, { height: height * 0.232 }]}
+        resizeMode="cover"
+        customIconStyle={{
+          borderTopLeftRadius: 10,
+          borderTopRightRadius: 10,
+        }}
+      />
+      {isFavorite && (
+        <ImagePopup
+          setIsFavorite={setIsFavorite}
+          images={item}
+          isVisible={isFavorite}
         />
-        {isFavorite && <ImagePopup setIsFavorite={setIsFavorite} images={item} isVisible={isFavorite} />}
-      </TouchableOpacity>
-    );
-  };
+      )}
+    </TouchableOpacity>
+  );
 
 
 

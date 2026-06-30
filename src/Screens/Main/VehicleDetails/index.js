@@ -44,14 +44,14 @@ const carouselHeight = height * 0.35;
 
 const VehicleDetails = ({ route, navigation }) => {
   const scrollRef = useRef(null);
-  const { vehicleId } = route.params || {};
+  const { vehicleId,carItem } = route.params || {};
   const {
     data: vehicle,
     isLoading,
     error,
     refetch,
   } = useFetchVehicleByIdQuery(vehicleId, { refetchOnFocus: true, refetchOnMountOrArgChange: true, refetchOnReconnect: true });
-  LOG('vehicle::', vehicle?.gallery);
+ 
 
   const [
     deleteVehicle,
@@ -184,7 +184,7 @@ const VehicleDetails = ({ route, navigation }) => {
   const handleMoreInfo = () => {
     scrollRef.current?.scrollToEnd({ animated: true });
   };
-console.log('vehiclevehiclevehicle',vehicle)
+
   return (
     <View style={styles.container}>
       <View>
@@ -279,7 +279,7 @@ console.log('vehiclevehiclevehicle',vehicle)
             marginTop: 12,
             width: '100%',
           }}>
-            <DropdownActions navigation={navigation} vehicleId={vehicle?._id} />
+            <DropdownActions name={carItem?.vehicleType?.name} navigation={navigation} vehicleId={vehicle?._id} />
 
           </View>
           <TouchableOpacity style={{ backgroundColor: colors.theme.primary, borderRadius: 10, width: 94, justifyContent: 'center', alignItems: "center", height: 40, marginTop: 15 }} onPress={handleMoreInfo}>
@@ -465,7 +465,7 @@ console.log('vehiclevehiclevehicle',vehicle)
             </View>
             <View >
               <View style={styles.column}>
-                <CustomText text="Curremt Miles" {...labelProps} />
+                <CustomText text="Current Miles" {...labelProps} />
                 <CustomText text={vehicle?.additionalDetails?.milesAtLastOilChange || 'N/A'} {...valueProps} />
               </View>
 
@@ -491,7 +491,7 @@ console.log('vehiclevehiclevehicle',vehicle)
               {vehicle?.vehicleType?.name == 'Semi Truck' && <View >
 
                 <View style={styles.column}>
-                  <CustomText text="Trailor information" {...labelProps} />
+                  <CustomText text="Trailer information" {...labelProps} />
                   <CustomText text={vehicle?.additionalDetails?.tirePressure || 'N/A'} {...valueProps} />
                 </View>
 

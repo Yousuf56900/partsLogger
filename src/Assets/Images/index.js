@@ -9,6 +9,8 @@ export const appImages = {
   car: require('./car.png'),
   truck: require('./truck.png'),
   tractor: require('./tractor.png'),
+  coupe1930: require('./coupe1930.png'),
+  fordLogo: require('./fordLogo.png'),
   vehicle1: require('./vehicle1.png'),
   vehicle2: require('./vehicle2.png'),
   vehicle3: require('./vehicle3.png'),

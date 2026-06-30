@@ -18,11 +18,14 @@ import { CommonActions } from '@react-navigation/native';
 import CustomText from '../wrappers/Text/CustomText';
 import fonts from '../../Assets/fonts';
 import Icon from 'react-native-vector-icons/Feather'
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 // import { useNavigation } from '@react-navigation/native';
 
 const { width } = Dimensions.get('screen');
 
 const TabBar = ({ state, navigation }) => {
+  const insets = useSafeAreaInsets();
+  const bottomInset = Math.max(insets.bottom, 0);
   const handlePress = routeName => {
     if (routeName === 'tabbar4') return;
     // if (routeName === routes?.tab?.home) {
@@ -43,10 +46,10 @@ const TabBar = ({ state, navigation }) => {
   };
 
   return (
-    <View style={styles.tabbarContainer}>
+    <View style={[styles.tabbarContainer, { paddingBottom: bottomInset }]}>
       <View
         style={{
-          bottom: -10,
+          bottom: bottomInset - 10,
           position: 'absolute',
           alignSelf: 'center',
           backgroundColor: 'transparent',
@@ -67,7 +70,7 @@ const TabBar = ({ state, navigation }) => {
       </View>
       <TouchableOpacity
         activeOpacity={0.9}
-        style={styles.middleTab}
+        style={[styles.middleTab, { bottom: 52 + bottomInset }]}
         onPress={() => navigation.navigate(routes.tab.addrecords)}>
           <Image source={require('../../Assets/Icons/home-normal.png')} />
         {/* <MyIcons name={'homeNormal'} color="transparent" size={20} /> */}
@@ -135,7 +138,6 @@ const TabBar = ({ state, navigation }) => {
 
 const styles = StyleSheet.create({
   tabbarContainer: {
-    marginBottom: -4,
     position: 'absolute',
     bottom: 0,
     left: 0,
@@ -176,7 +178,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     position: 'absolute',
-    bottom: 52,
     right: '42%',
     left: '42%',
     borderColor:'#000',

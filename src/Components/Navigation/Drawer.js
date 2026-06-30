@@ -82,6 +82,7 @@ const DrawerComp = ({ navigation }) => {
   const { resetToScreen } = useResetToScreen();
   const dispatch = useDispatch();
   const userDetails = useSelector(state => state?.auth?.user || {});
+  console.log('userDetailsuserDetails',userDetails)
   let profileImage = getImageUrl(userDetails?.image);
   let fullName = getFullName(userDetails?.firstName, userDetails?.lastName);
 
@@ -159,7 +160,6 @@ const DrawerComp = ({ navigation }) => {
           onPress={() => navigation.navigate(routes?.main?.myProfile)}>
           <View>
             <Image source={profileImage} style={styles?.profileStyles} />
-            {/* <View style={styles?.onlineDot} /> */}
           </View>
           <CustomText
             text={fullName}
